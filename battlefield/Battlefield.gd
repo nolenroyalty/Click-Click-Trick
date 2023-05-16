@@ -34,6 +34,7 @@ func execute_tick():
 	match beat:
 		U.BEAT.NOOP:
 			# Remove dead enemies
+			# Maybe reset music if it's way off?
 			pass
 		U.BEAT.SHOW: pass
 		U.BEAT.MOVE:
@@ -53,8 +54,7 @@ func clear_move_state():
 
 func move_player():
 	var moves = player.get_moves()
-	for move in moves:
-		move(player, U.d(move))
+	move(player, moves)
 			
 func _process(_delta):
 	match state:
@@ -65,8 +65,7 @@ func _process(_delta):
 
 func move_enemies():
 	for enemy in get_enemies():
-		for move in enemy.get_moves():
-			move(enemy, U.d(move))
+		move(enemy, enemy.get_moves())
 
 func tick_enemies(beat):
 	for enemy in get_enemies():
@@ -93,15 +92,37 @@ func stop_music():
 	beat_timer.stop()
 	MusicLoop.stop()
 
-func move(node, d):
+func move(node, moves):
+	if len(moves) == 0: return
+
+	var total_time = U.beat_time / 2
+	var each_move_time = total_time / len(moves)
 	var pos = U.pos_(node)
-	var new_pos = pos + d
-	var clamped = new_pos
-	clamped.x = clamp(new_pos.x, 0, width - 1)
-	clamped.y = clamp(new_pos.y, 0, height - 1)
-	node.position = clamped * C.CELL_SIZE + C.GRID_OFFSET
-	if clamped != new_pos: return false
-	else: return true
+	# var final_pos
+
+	var t = Tween.new()
+	add_child(t)
+
+	for move in moves:
+		var new_pos = pos + U.d(move)
+		var clamped = new_pos
+		clamped.x = clamp(new_pos.x, 0, width - 1)
+		clamped.y = clamp(new_pos.y, 0, height - 1)
+		# Add a rotation animation here?
+		# final_pos = clamped
+
+		var move_to = clamped * C.CELL_SIZE + C.GRID_OFFSET
+		t.interpolate_property(node, "position", null, move_to, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		t.start()
+		yield(t, "tween_completed")
+		pos = new_pos
+	
+	node.position = pos * C.CELL_SIZE + C.GRID_OFFSET
+
+	t.call_deferred("queue_free")
+	# node.position = clamped * C.CELL_SIZE + C.GRID_OFFSET
+	# if clamped != new_pos: return false
+	# else: return true
 
 func get_enemies():
 	var e = []

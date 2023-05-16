@@ -20,4 +20,4 @@ position = Vector2( 1, 161 )
 position = Vector2( 225, 193 )
 
 [node name="Zone" parent="." instance=ExtResource( 5 )]
-position = Vector2( 1, 161 )
+position = Vector2( 129, 161 )

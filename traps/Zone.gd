@@ -1,6 +1,16 @@
 extends Node2D
 
+onready var audio = $AudioStreamPlayer2D
+onready var pulse_tween = $PulseTween
+
 var present_enemies = {}
+var sound_success = preload("res://sounds/success-1.wav")
+var sound_fail = preload("res://sounds/fail-1.wav")
+
+func display_success():
+	audio.stream = sound_success
+	audio.play()
+	pulse_tween.pulse()
 
 func get_enemy(area):
 	var potential_enemy = area.get_parent()
@@ -13,6 +23,7 @@ func get_enemy(area):
 func enemy_entered(area):
 	var enemy = get_enemy(area)
 	if enemy:
+		display_success()
 		present_enemies[enemy] = true
 
 func enemy_exited(area):
