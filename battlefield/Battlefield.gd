@@ -41,12 +41,18 @@ func execute_tick():
 		U.BEAT.MOVE:
 			move_player()
 			move_enemies()
+			clear_move_state()
 			player.execute()
 			# Collision won't fire on this frame, so we can't handle
 			# collisions here. We can either handle them on the next beat
 			# (probably awkward from a gameplay perspective) or we can
 			# handle them in the relevant trap code as they trigger.
 			# I think the latter is the better option.
+
+func clear_move_state():
+	for enemy in get_enemies():
+		enemy.clear_move_state()
+	# This should clear the player state too imo
 
 func move_player():
 	var moves = player.get_moves()
@@ -62,8 +68,8 @@ func _process(_delta):
 
 func move_enemies():
 	for enemy in get_enemies():
-		for direction in enemy.get_directions():
-			move(enemy, U.d(direction))
+		for move in enemy.get_moves():
+			move(enemy, U.d(move))
 
 func tick_enemies(beat):
 	for enemy in get_enemies():

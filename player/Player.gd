@@ -71,7 +71,6 @@ func display_pathing():
 	for move in moves:
 		if move == U.D.NONE: continue
 		var d = pos + U.d(move)
-		print("Me: %s | Square: %s | D: %s" % [pos, d, U.d(move)])
 		if U.in_bounds(d):
 			var square = PathingSquare.instance()
 			square.position = d * C.CELL_SIZE

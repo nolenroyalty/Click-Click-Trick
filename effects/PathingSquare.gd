@@ -10,6 +10,3 @@ func set_color(c):
 	match c:
 		COLOR.PLAYER: color_rect.color = PLAYER_COLOR
 		COLOR.ENEMY: color_rect.color = ENEMY_COLOR
-
-func _ready():
-	print(color_rect)
