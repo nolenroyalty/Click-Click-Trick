@@ -39,15 +39,19 @@ func execute_tick():
 			# Show each enemies' next move
 			player.pulse()
 		U.BEAT.MOVE:
-			player.execute()
-			# Move the player
-			move(player, U.d(player.direction))
+			move_player()
 			move_enemies()
+			player.execute()
 			# Collision won't fire on this frame, so we can't handle
 			# collisions here. We can either handle them on the next beat
 			# (probably awkward from a gameplay perspective) or we can
 			# handle them in the relevant trap code as they trigger.
 			# I think the latter is the better option.
+
+func move_player():
+	var moves = player.get_moves()
+	for move in moves:
+		move(player, U.d(move))
 			
 func _process(_delta):
 	match state:
@@ -116,6 +120,8 @@ func _ready():
 	init_enemies()
 	width = $Grid.width
 	height = $Grid.height
+	U.WIDTH = width
+	U.HEIGHT = height
 
 
 func _music():

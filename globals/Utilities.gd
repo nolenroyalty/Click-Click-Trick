@@ -2,8 +2,11 @@ extends Node
 
 func v(x, y): return Vector2(x, y)
 
-enum D { NONE, UP, DOWN, LEFT, RIGHT }
-enum BEAT { NOOP, SHOW, MOVE }
+enum D { NONE = 1, UP = 2, DOWN = 3, LEFT = 4, RIGHT = 5 }
+enum BEAT { NOOP = 1, SHOW = 2, MOVE = 3 }
+# Gross
+var WIDTH
+var HEIGHT
 
 var bpm = 0 setget set_bpm
 var beat_time = 0
@@ -22,6 +25,9 @@ func pos_(node):
 	var x = int(p.x / C.CELL_SIZE)
 	var y = int(p.y / C.CELL_SIZE)
 	return v(x, y)
+
+func in_bounds(pos):
+	return pos.x >= 0 and pos.x < WIDTH and pos.y >= 0 and pos.y < HEIGHT
 
 func set_bpm(bpm_):
 	bpm = bpm_
