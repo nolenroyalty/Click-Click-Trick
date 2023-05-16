@@ -27,22 +27,19 @@ func execute_tick():
 	
 	var beat = get_beat()
 	incr_beat()
+	player.tick(beat)
 	tick_enemies(beat)
 	tick_traps(beat)
 
 	match beat:
 		U.BEAT.NOOP:
-			player.record()
 			# Remove dead enemies
-		U.BEAT.SHOW:
-			# Pulse enemies
-			# Show each enemies' next move
-			player.pulse()
+			pass
+		U.BEAT.SHOW: pass
 		U.BEAT.MOVE:
 			move_player()
 			move_enemies()
 			clear_move_state()
-			player.execute()
 			# Collision won't fire on this frame, so we can't handle
 			# collisions here. We can either handle them on the next beat
 			# (probably awkward from a gameplay perspective) or we can
@@ -50,9 +47,9 @@ func execute_tick():
 			# I think the latter is the better option.
 
 func clear_move_state():
+	player.clear_move_state()
 	for enemy in get_enemies():
 		enemy.clear_move_state()
-	# This should clear the player state too imo
 
 func move_player():
 	var moves = player.get_moves()
@@ -128,7 +125,6 @@ func _ready():
 	height = $Grid.height
 	U.WIDTH = width
 	U.HEIGHT = height
-
 
 func _music():
 	return track[0]
