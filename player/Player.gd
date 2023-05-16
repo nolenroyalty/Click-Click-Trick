@@ -3,7 +3,7 @@ extends Node2D
 enum S { RECORDING, MOVING }
 
 onready var sprite = $Sprite
-onready var anim = $AnimationPlayer
+onready var pulse_tween = $PulseTween
 
 var state = S.RECORDING
 var direction = U.D.NONE
@@ -62,4 +62,5 @@ func _process(_delta):
 			pulse()
 		
 func pulse():
-	anim.play("pulse")
+	pulse_tween.pulse()
+	# anim.play("pulse")

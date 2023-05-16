@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var sprite = $Sprite
+onready var pulse_tween = $PulseTween
 var player : Node2D
 var direction = U.D.NONE
 
@@ -47,13 +48,17 @@ func display_current_move():
 func get_directions():
 	return [direction]
 
+func pulse():
+	pulse_tween.pulse()
+
 func tick(beat):
 	match beat:
 		U.BEAT.NOOP:
 			direction = U.D.NONE
 		U.BEAT.SHOW:
 			direction = player_direction()
+			pulse()
 			# Pulse?
-		U.BEAT.EXECUTE:
+		U.BEAT.MOVE:
 			pass
 	display_current_move()

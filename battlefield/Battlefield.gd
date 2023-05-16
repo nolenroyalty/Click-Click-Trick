@@ -3,10 +3,9 @@ extends Node2D
 onready var player = $Player
 onready var beat_timer = $BeatTimer
 
-enum BEAT { NOOP, SHOW, EXECUTE }
 enum S { WAIT, TICKING }
-const FOURFOUR_SIMPLE = [ BEAT.NOOP, BEAT.SHOW, BEAT.SHOW, BEAT.EXECUTE ]
-const TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
+var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
+var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
 var track = TRACKS[0]
 var beat_count = 0
@@ -29,24 +28,27 @@ func execute_tick():
 	var beat = get_beat()
 	incr_beat()
 	tick_enemies(beat)
+	tick_traps(beat)
 
 	match beat:
-		BEAT.NOOP:
+		U.BEAT.NOOP:
 			player.record()
-		BEAT.SHOW:
+			# Remove dead enemies
+		U.BEAT.SHOW:
 			# Pulse enemies
 			# Show each enemies' next move
 			player.pulse()
-		BEAT.EXECUTE:
+		U.BEAT.MOVE:
 			player.execute()
 			# Move the player
 			move(player, U.d(player.direction))
 			move_enemies()
-			# Move the enemies
-			# Penalize enemies that fell for a trap
-			# Remove dead enemies
-			# Handle collisions for enemies / projectiles after removing dead ones
-
+			# Collision won't fire on this frame, so we can't handle
+			# collisions here. We can either handle them on the next beat
+			# (probably awkward from a gameplay perspective) or we can
+			# handle them in the relevant trap code as they trigger.
+			# I think the latter is the better option.
+			
 func _process(_delta):
 	match state:
 		S.WAIT:
@@ -57,10 +59,7 @@ func _process(_delta):
 func move_enemies():
 	for enemy in get_enemies():
 		for direction in enemy.get_directions():
-			print(direction)
-			var d = U.d(direction)
-			print(d)
-			move(enemy, d)
+			move(enemy, U.d(direction))
 
 func tick_enemies(beat):
 	for enemy in get_enemies():
@@ -70,9 +69,13 @@ func init_enemies():
 	for enemy in get_enemies():
 		enemy.init(player)
 
+func tick_traps(beat):
+	for trap in get_traps():
+		trap.tick(beat)
+
 func start_music():
 	state = S.TICKING
-	beat_timer.wait_time = 60.0 / _bpm()
+	beat_timer.wait_time = U.beat_time
 	beat_timer.connect("timeout", self, "execute_tick")
 	MusicLoop.start(_music())
 	execute_tick()
@@ -87,7 +90,6 @@ func move(node, d):
 	var pos = U.pos_(node)
 	var new_pos = pos + d
 	var clamped = new_pos
-	# print("%s | %s | %s | %s" % [pos_(node), pos, new_pos, clamped])
 	clamped.x = clamp(new_pos.x, 0, width - 1)
 	clamped.y = clamp(new_pos.y, 0, height - 1)
 	node.position = clamped * C.CELL_SIZE + C.GRID_OFFSET
@@ -101,11 +103,20 @@ func get_enemies():
 			e.append(enemy)
 	return e
 
+func get_traps():
+	var t = []
+	for trap in get_children():
+		if trap.is_in_group("trap"):
+			t.append(trap)
+	return t
+
 func _ready():
+	U.set_bpm(_bpm())
 	start_music()
 	init_enemies()
 	width = $Grid.width
 	height = $Grid.height
+
 
 func _music():
 	return track[0]
