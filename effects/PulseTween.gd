@@ -1,10 +1,11 @@
 extends Tween
 
 # Attach to any node with a Sprite child and call pulse() to make it pulse.
-var sprite
+var target
+var property = "scale"
 
 func interp(time, start, end):
-	var _ignore = interpolate_property(sprite, "scale", start, end, time, TRANS_QUAD, EASE_OUT)
+	var _ignore = interpolate_property(target, property, start, end, time, TRANS_QUAD, EASE_OUT)
 
 func pulse(amount = U.v(1.1, 1.1)):
 	# I don't quite understand why, but this doesn't look right if we divide time by 2.0 as you'd expect.
@@ -21,4 +22,6 @@ func pulse(amount = U.v(1.1, 1.1)):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	sprite = get_parent().get_node("Sprite")
+	var parent = get_parent()
+	if parent.has_node("Sprite"):
+		target = parent.get_node("Sprite")

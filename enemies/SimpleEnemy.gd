@@ -50,15 +50,13 @@ func moves_to_take_to_player():
 func die():
 	# Sound effect?
 	var t = Tween.new()
-	var init = Color(1, 1, 1, 1)
 	var final = Color(1, 1, 1, 0)
-	t.interpolate_property(sprite, "modulate", init, final, U.beat_time / 2.0, Tween.TRANS_QUAD, Tween.EASE_IN)
+	t.interpolate_property(sprite, "modulate", null, final, U.beat_time / 2.0, Tween.TRANS_QUAD, Tween.EASE_IN)
 	add_child(t)
 	t.start()
 	yield(t, "tween_completed")
 	self.call_deferred("queue_free")
-	# t.connect("tween_completed", self, "queue_free")
-	
+
 func tick(beat):
 	if dead: return
 	match beat:

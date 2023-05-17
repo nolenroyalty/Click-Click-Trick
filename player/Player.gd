@@ -14,7 +14,7 @@ func add_move(move):
 		U.D.NONE: moves = [ U.D.NONE ]
 		var other:
 			if moves == [ U.D.NONE ]: moves = [ move ]
-			elif len(moves) >= 2: moves = [ other ]
+			elif len(moves) >= 3: moves = [ other ]
 			else: moves.append(other)
 			
 			# Lets you cancel an "UP" by inputting a "DOWN" right after

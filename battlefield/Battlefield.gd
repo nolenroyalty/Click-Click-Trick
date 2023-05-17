@@ -37,7 +37,9 @@ func execute_tick():
 			clear_dead_enemies()
 			# Maybe reset music if it's way off?
 			pass
-		U.BEAT.SHOW: pass
+		U.BEAT.SHOW: 
+			pass
+			$Grid.pulse()
 		U.BEAT.MOVE:
 			move_player()
 			move_enemies()
@@ -118,10 +120,17 @@ func move(node, moves):
 		i += 1
 		if i < len(moves):
 			var next_move = moves[i]
+			# Spin 270 degrees clockwise on all turns. Looks kinda neat?
 			var target_rotation = U.rotation(next_move)
-			if move == U.D.UP and next_move == U.D.LEFT:
-				target_rotation = -90
-			t.interpolate_property(node.sprite, "rotation_degrees", null, target_rotation, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			var current_rotation = U.rotation(move)
+			var diff = abs(current_rotation - target_rotation)
+			if 0 < diff and diff < 270:
+				if current_rotation < target_rotation:
+					current_rotation += 360
+				else:
+					target_rotation += 360
+
+			t.interpolate_property(node.sprite, "rotation_degrees", current_rotation, target_rotation, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		t.start()
 		yield(t, "tween_all_completed")
 		pos = new_pos

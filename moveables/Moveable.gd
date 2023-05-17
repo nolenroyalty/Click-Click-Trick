@@ -71,8 +71,6 @@ func get_moves():
 func pulse():
 	pulse_tween.pulse(U.v(1.2, 1.2))
 
-
-
 func emit_died():
 	print("I died! %s" % [ self ])
 	dead = true
