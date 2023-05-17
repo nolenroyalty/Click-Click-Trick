@@ -34,7 +34,7 @@ func flip():
 		current_rotation = 0
 		desired_rotation = 180
 	
-	var time = 0.5
+	var time = U.beat_time / 2
 	var biggest = U.v(1, 1)
 	var smallest = U.v(0.25, 0.25)
 	tween.interpolate_property(sprite, "rotation_degrees", current_rotation, desired_rotation, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
@@ -60,6 +60,17 @@ func stop_tracking(area):
 	if not tracking.erase(moveable):
 		print("Potential bug: stopped tracking %s but we weren't tracking it! - %s" % [moveable, self])
 
+func on_fail():
+	play_fail()
+	var time = U.beat_time / 3
+	pulse()
+	var default = Color("#30408c")
+	var red = Color("#8e3a47")
+	tween.interpolate_property(self, "modulate", default, red, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	tween.interpolate_property(self, "modulate", red, default, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time)
+	tween.start()
+
+
 func penalize_wrong_directions():
 	for moveable in tracking.keys():
 		if moveable in penalized:
@@ -68,7 +79,7 @@ func penalize_wrong_directions():
 		if moveable.direction_right_this_second != direction and moveable.direction_right_this_second != U.D.NONE:
 			# We allow None because it allows a player to stop *on* the arrow and then bop out of it on the
 			# next turn.
-			if play_success_for_enemy_fail_for_player(moveable):
+			if success_or_fail(moveable):
 				penalized[moveable] = true
 				moveable.damage()
 
@@ -90,6 +101,6 @@ func tick(beat):
 		U.BEAT.NOOP:
 			flip()
 		U.BEAT.SHOW:
-			pass
+			pulse()
 		U.BEAT.MOVE:
 			clear_penalties()

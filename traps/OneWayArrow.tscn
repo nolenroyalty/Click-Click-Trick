@@ -8,6 +8,7 @@
 extents = Vector2( 12, 12 )
 
 [node name="OneWayArrow" type="Node2D" groups=["trap"]]
+modulate = Color( 0.188235, 0.25098, 0.54902, 1 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

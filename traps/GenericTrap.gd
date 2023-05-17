@@ -17,16 +17,25 @@ func play_fail():
 	audio_fail.stream = sound_fail
 	audio_fail.play()
 
-func play_success_for_enemy_fail_for_player(moveable):
-	if moveable is Player:
-		play_fail()
-		return true
-	elif moveable.is_in_group("enemy"):
-		play_success()
-		return true
-	else:
-		print("Potential bug: moveable was nota  player or enemy! %s" % [moveable])
+func on_success():
+	play_success()
+
+func on_fail():
+	play_fail()
+
+func success_or_fail(moveable, triggering_is_good=false):
+	var is_player = moveable is Player
+
+	if not is_player and not moveable.is_in_group("enemy"):
+		print("Potential bug: moveable was not a player or enemy! %s" % [moveable])
 		return false
+
+	if is_player == triggering_is_good:
+		on_success()
+	else:
+		on_fail()
+	
+	return true
 
 func pulse():
 	pulse_tween.pulse()
