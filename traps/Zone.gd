@@ -1,20 +1,23 @@
 extends Node2D
 
-onready var audio = $AudioStreamPlayer2D
+onready var audio_success = $AudioSuccess
+onready var audio_fail = $AudioFail
 onready var pulse_tween = $PulseTween
 
 var sound_success = preload("res://sounds/success-2.wav")
 var sound_fail = preload("res://sounds/fail-2.wav")
 
-# func get_enemy(area):
-# 	var potential_enemy = area.get_parent()
-# 	if potential_enemy.is_in_group("enemy"):
-# 		return potential_enemy
-# 	else:
-# 		print("Potential bug: get_enemy called with something that wasn't an enemy! Area: %s | Parent: %s" % [area, potential_enemy])
-# 		return null
+func play_sound_and_pulse(was_success):
+	var audio
+	var sound
 
-func play_sound_and_pulse(sound):
+	if was_success:
+		sound = sound_success
+		audio = audio_success
+	else:
+		sound = sound_fail
+		audio = audio_fail
+	
 	audio.stream = sound
 	audio.play()
 	pulse_tween.pulse()
@@ -27,9 +30,9 @@ func entered(area):
 	
 	var sound = null
 	if moveable is Player:
-		sound = sound_fail
-	elif moveable.is_in_group("enemy"):
-		sound = sound_success
+		play_sound_and_pulse(false)
+	elif moveable.is_in_group("enemy"): 
+		play_sound_and_pulse(true)
 	else:
 		print("potential bug: moveable was not a player or enemy: %s" % [moveable])
 		return
@@ -42,4 +45,3 @@ func tick(_beat):
 
 func _ready():
 	var _ignore = $Area2D.connect("area_entered", self, "entered")
-	# _ignore = $Area2D.connect("area_exited", self, "exited")

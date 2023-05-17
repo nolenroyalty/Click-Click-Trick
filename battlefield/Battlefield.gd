@@ -1,33 +1,17 @@
 extends Node2D
 
 onready var player = $Player
-onready var beat_timer = $BeatTimer
 
-enum S { WAIT, TICKING }
 var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
 var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
 var track = TRACKS[0]
 var beat_count = 0
-var state = S.WAIT
 var width = 0
 var height = 0
 var dead_enemies = {}
 
-func get_beat():
-	return _beats()[beat_count]
-
-func incr_beat():
-	beat_count = (beat_count + 1) % len(_beats())
-
-func execute_tick():
-	match state:
-		S.TICKING:
-			pass
-		_: return
-	
-	var beat = get_beat()
-	incr_beat()
+func tick(beat):
 	player.tick(beat)
 	tick_enemies(beat)
 	tick_traps(beat)
@@ -84,20 +68,6 @@ func init_enemies():
 func tick_traps(beat):
 	for trap in get_traps():
 		trap.tick(beat)
-
-func start_music():
-	state = S.TICKING
-	beat_timer.wait_time = U.beat_time
-	beat_timer.connect("timeout", self, "execute_tick")
-	MusicLoop.start(_music())
-	execute_tick()
-	beat_timer.start()
-
-func stop_music():
-	state = S.WAIT
-	beat_timer.stop()
-	MusicLoop.stop()
-
 
 func teleport_node(node):
 	node.position = U.pos_to_world(node.teleport_to)
@@ -172,19 +142,8 @@ func get_traps():
 	return t
 
 func _ready():
-	U.set_bpm(_bpm())
-	start_music()
 	init_enemies()
 	width = $Grid.width
 	height = $Grid.height
 	U.WIDTH = width
 	U.HEIGHT = height
-
-func _music():
-	return track[0]
-
-func _beats():
-	return track[1]
-
-func _bpm(): 
-	return track[2]
