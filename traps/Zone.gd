@@ -28,7 +28,6 @@ func entered(area):
 		print("potential bug: non-moveable detected by zone %s" % [moveable])
 		return
 	
-	var sound = null
 	if moveable is Player:
 		play_sound_and_pulse(false)
 	elif moveable.is_in_group("enemy"): 
@@ -36,8 +35,7 @@ func entered(area):
 	else:
 		print("potential bug: moveable was not a player or enemy: %s" % [moveable])
 		return
-	
-	play_sound_and_pulse(sound)
+
 	moveable.damage()
 	
 func tick(_beat):
