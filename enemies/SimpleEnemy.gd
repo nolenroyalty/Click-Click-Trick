@@ -61,6 +61,7 @@ func tick(beat):
 	if dead: return
 	match beat:
 		U.BEAT.NOOP:
+			direction_right_this_second = U.D.NONE
 			orient_for_first_move()
 		U.BEAT.SHOW:
 			moves = moves_to_take_to_player()

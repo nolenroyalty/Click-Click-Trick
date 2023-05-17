@@ -1,7 +1,7 @@
-extends Node2D
+extends GenericTrap
 
 onready var area = $Area2D
-var other_teleporter = null
+var _other_teleporter = null
 
 func all_teleporters_other_than_me():
 	var teleporters = get_tree().get_nodes_in_group("teleporter")
@@ -22,35 +22,30 @@ func find_other_teleporter():
 		print("Likely bug - found too many other teleporters! %s" % [self])
 		return null
 	
-	other_teleporter = teleporters_other_than_me[0]
+	_other_teleporter = teleporters_other_than_me[0]
 
 func get_other_teleporter():
-	if other_teleporter == null:
+	if _other_teleporter == null:
 		find_other_teleporter()
-	return other_teleporter
-
-func pulse():
-	$PulseTween.pulse()
+	return _other_teleporter
 
 func teleport(node):
-	var teleporter = get_other_teleporter()
+	var other_teleporter = get_other_teleporter()
 
-	if teleporter == null:
+	if other_teleporter == null:
 		print("No other teleporter - can't teleport %s - bailing %s" % [node, self])
 		return
 	
-	if node.set_teleport_postiion_if_possible(U.pos_(teleporter)):
+	if node.set_teleport_postiion_if_possible(U.pos_(other_teleporter)):
 		# Play a sound?
 		pulse()
-		teleporter.pulse()
+		other_teleporter.pulse()
 
 func handle_area_entered(node):
-	var parent = node.get_parent()
-	if parent is Moveable:
-		teleport(parent)
-	else:
-		print("Likely bug - %s (parent %s) entered teleporter but it's not a Moveable" % [node, parent])
-
+	var moveable = moveable_of_area(node)
+	if not moveable: return
+	teleport(moveable)
+	
 func handle_area_exited(node):
 	var parent = node.get_parent()
 	if parent is Moveable:

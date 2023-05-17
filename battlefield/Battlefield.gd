@@ -74,6 +74,7 @@ func teleport_node(node):
 	node.set_has_been_teleported()
 
 func move(node, moves):
+	# Kinda feels like we should put this in moveable! but alas
 	if len(moves) == 0: return
 
 	var total_time = U.beat_time / 2
@@ -91,6 +92,10 @@ func move(node, moves):
 		if node.should_teleport_on_next_move():
 			pos = node.teleport_to
 			teleport_node(node)
+
+		# There's a chance that we need to wait some amount of time here to avoid false positives for the one-ways?
+		# But I think this is fine.
+		node.direction_right_this_second = move
 
 		var new_pos = pos + U.d(move)
 		var clamped = new_pos
@@ -121,9 +126,6 @@ func move(node, moves):
 	if node.should_teleport_on_next_move():
 		# A teleporter was the last tile that we reached while moving
 		teleport_node(node)
-
-	# if node.has_been_teleported():
-		# node.clear_teleportation_state()
 
 	t.call_deferred("queue_free")
 

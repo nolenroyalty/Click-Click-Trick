@@ -17,6 +17,7 @@ var dead = false
 var teleport_to = null
 var teleport_state = TELEPORT_STATE.NONE
 var is_player = false
+var direction_right_this_second = U.D.NONE
 
 func set_frame_for_move(move):
 	var frame = 0

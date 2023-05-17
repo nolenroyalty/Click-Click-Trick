@@ -1,45 +1,17 @@
-extends Node2D
-
-onready var audio_success = $AudioSuccess
-onready var audio_fail = $AudioFail
-onready var pulse_tween = $PulseTween
-
-var sound_success = preload("res://sounds/success-2.wav")
-var sound_fail = preload("res://sounds/fail-2.wav")
+extends GenericTrap
 
 func play_sound_and_pulse(was_success):
-	var audio
-	var sound
-
-	if was_success:
-		sound = sound_success
-		audio = audio_success
-	else:
-		sound = sound_fail
-		audio = audio_fail
+	if was_success: play_success()
+	else: play_fail()
 	
-	audio.stream = sound
-	audio.play()
-	pulse_tween.pulse()
+	pulse()
 
 func entered(area):
-	var moveable = area.get_parent()
-	if not (moveable is Moveable):
-		print("potential bug: non-moveable detected by zone %s" % [moveable])
-		return
+	var moveable = moveable_of_area(area)
+	if moveable == null: return
 	
-	if moveable is Player:
-		play_sound_and_pulse(false)
-	elif moveable.is_in_group("enemy"): 
-		play_sound_and_pulse(true)
-	else:
-		print("potential bug: moveable was not a player or enemy: %s" % [moveable])
-		return
-
-	moveable.damage()
-	
-func tick(_beat):
-	pass
+	if play_success_for_enemy_fail_for_player(moveable):
+		moveable.damage()
 
 func _ready():
 	var _ignore = $Area2D.connect("area_entered", self, "entered")

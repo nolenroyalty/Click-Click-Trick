@@ -65,6 +65,7 @@ func sum_d_moves(moves_):
 func tick(beat):
 	match beat:
 		U.BEAT.NOOP:
+			direction_right_this_second = U.D.NONE
 			state = S.RECORDING
 			orient_for_first_move()
 		U.BEAT.SHOW:
