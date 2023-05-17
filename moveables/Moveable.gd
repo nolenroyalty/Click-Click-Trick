@@ -4,19 +4,19 @@ class_name Moveable
 
 signal died
 
+enum TELEPORT_STATE { NONE, SHOULD_TELEPORT, HAS_BEEN_TELEPORTED }
+
 var PathingSquare = preload("res://effects/PathingSquare.tscn")
 onready var sprite = $Sprite
 onready var pulse_tween = $PulseTween
-var pathing_square_instance_for_stupid_hack = PathingSquare.instance()
 
 var moves = []
 var current_pathing_squares = []
 var health = 1
 var dead = false
-
-func get_pathing_color():
-	# SUrely there's a better way to do this
-	return pathing_square_instance_for_stupid_hack.COLOR.ENEMY
+var teleport_to = null
+var teleport_state = TELEPORT_STATE.NONE
+var is_player = false
 
 func set_frame_for_move(move):
 	var frame = 0
@@ -53,17 +53,62 @@ func clear_move_state():
 func display_pathing():
 	clear_pathing()
 	var pos = U.pos_(self)
+	var i = 0
+
 	for move in moves:
 		if move == U.D.NONE: continue
 		var d = pos + U.d(move)
 		if U.in_bounds(d):
 			var square = PathingSquare.instance()
-			square.position = d * C.CELL_SIZE + C.GRID_OFFSET
+			var next_move = null
+
+			if i + 1 < len(moves):
+				var movement_for_next_move = U.d(moves[i + 1])
+				if U.in_bounds(d + movement_for_next_move): next_move = moves[i+1]
+			
+			square.position = U.pos_to_world(d)
 			get_parent().add_child(square)
-			var color = get_pathing_color()
-			square.set_color(color)
+			if is_player:
+				print("p %s s %s" % [global_position, square.global_position])
+			square.init(is_player, move, next_move)
 			current_pathing_squares.append(square)
 			pos = d
+		
+		i += 1
+
+func handle_teleport_to(pos):
+	teleport_to = pos
+	# Maybe??
+	pulse_tween.pulse()
+
+func should_teleport_on_next_move():
+	match teleport_state:
+		TELEPORT_STATE.NONE: return false
+		TELEPORT_STATE.SHOULD_TELEPORT: return true
+		TELEPORT_STATE.HAS_BEEN_TELEPORTED: return false
+
+func set_teleport_postiion_if_possible(pos):
+	match teleport_state:
+		TELEPORT_STATE.NONE:
+			teleport_to = pos
+			teleport_state = TELEPORT_STATE.SHOULD_TELEPORT
+			return true
+		TELEPORT_STATE.SHOULD_TELEPORT, TELEPORT_STATE.HAS_BEEN_TELEPORTED:
+			return false
+
+func set_has_been_teleported():
+	match teleport_state:
+		TELEPORT_STATE.NONE, TELEPORT_STATE.HAS_BEEN_TELEPORTED:
+			print("LIkely bug - set_has_been_teleported called when state is not SHOULD_TELEPORT %s" % [self])
+		TELEPORT_STATE.SHOULD_TELEPORT:
+			teleport_state = TELEPORT_STATE.HAS_BEEN_TELEPORTED
+
+func has_been_teleported():
+	return teleport_state == TELEPORT_STATE.HAS_BEEN_TELEPORTED
+
+func clear_teleportation_state():
+	teleport_to = null
+	teleport_state = TELEPORT_STATE.NONE
 
 func get_moves():
 	return moves

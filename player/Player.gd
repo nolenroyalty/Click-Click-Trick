@@ -6,8 +6,9 @@ enum S { RECORDING, MOVING }
 
 var state = S.RECORDING
 
-func _ready():
-	health = 2
+# Tweaks:
+# * Don't allow queuing up an invalid move, just reject it
+# * Fix d_moves logic now that we're using 3 moves
 
 func add_move(move):
 	match move:
@@ -27,10 +28,6 @@ func get_move():
 	elif Input.is_action_just_pressed("player_right"): return U.D.RIGHT
 	elif Input.is_action_just_pressed("player_cancel"): return U.D.NONE
 	else: return null
-
-func get_pathing_color():
-	# surely there's a better way to do this
-	return pathing_square_instance_for_stupid_hack.COLOR.PLAYER
 
 func sum_d_moves():
 	var sum = Vector2()
@@ -57,3 +54,7 @@ func _process(_delta):
 				add_move(move)
 				orient_for_first_move()
 				display_pathing()
+
+func _ready():
+	health = 2
+	is_player = true

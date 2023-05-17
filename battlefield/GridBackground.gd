@@ -19,5 +19,5 @@ func _ready():
 
 func pulse():
 	# This needs to pulse everything on the grid for it to work
-	# pulse_tween.pulse(U.v(0.98, 0.98))
+	pulse_tween.pulse(U.v(1.05, 1.05))
 	pass

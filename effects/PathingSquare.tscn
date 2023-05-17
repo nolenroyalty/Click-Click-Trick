@@ -3,11 +3,5 @@
 [ext_resource path="res://effects/PathingSquare.gd" type="Script" id=1]
 
 [node name="PathingSquare" type="Node2D"]
-position = Vector2( 1, 1 )
+z_index = 1
 script = ExtResource( 1 )
-
-[node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 32.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 30, 30 )
-color = Color( 0.556863, 0.227451, 0.278431, 0.470588 )

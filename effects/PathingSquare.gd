@@ -1,12 +1,18 @@
 extends Node2D
 
-onready var color_rect = $ColorRect
-const PLAYER_COLOR = Color("#786b7636")
-const ENEMY_COLOR = Color("#788e3a47")
+var PathingLine = preload("res://effects/PathingLine.tscn")
 
-enum COLOR { PLAYER, ENEMY }
+# func offset(d):
+	# return (C.CELL_SIZE / 2) * U.d(d)
+	
+func init(is_player, this_move, next_move):
+	var this_tile = PathingLine.instance()
+	this_tile.position = U.center_in_world(this_tile.position)
+	add_child(this_tile)
+	this_tile.orient_and_set_color(is_player, this_move, false)
 
-func set_color(c):
-	match c:
-		COLOR.PLAYER: color_rect.color = PLAYER_COLOR
-		COLOR.ENEMY: color_rect.color = ENEMY_COLOR
+	if next_move:
+		var next_tile = PathingLine.instance()
+		add_child(next_tile)
+		next_tile.position = U.center_in_world(next_tile.position)
+		next_tile.orient_and_set_color(is_player, next_move, true)

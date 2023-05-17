@@ -39,8 +39,9 @@ func execute_tick():
 			pass
 		U.BEAT.SHOW: 
 			pass
-			$Grid.pulse()
+			# $Grid.pulse()
 		U.BEAT.MOVE:
+			$Grid.pulse()
 			move_player()
 			move_enemies()
 			clear_move_state()
@@ -97,6 +98,11 @@ func stop_music():
 	beat_timer.stop()
 	MusicLoop.stop()
 
+
+func teleport_node(node):
+	node.position = U.pos_to_world(node.teleport_to)
+	node.set_has_been_teleported()
+
 func move(node, moves):
 	if len(moves) == 0: return
 
@@ -108,19 +114,26 @@ func move(node, moves):
 
 	var i = 0
 	for move in moves:
+
 		if node in dead_enemies:
 			break
+		
+		if node.should_teleport_on_next_move():
+			pos = node.teleport_to
+			teleport_node(node)
+
 		var new_pos = pos + U.d(move)
 		var clamped = new_pos
 		clamped.x = clamp(new_pos.x, 0, width - 1)
 		clamped.y = clamp(new_pos.y, 0, height - 1)
 
-		var move_to = clamped * C.CELL_SIZE + C.GRID_OFFSET
+		var move_to = U.pos_to_world(clamped)
 		t.interpolate_property(node, "position", null, move_to, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		i += 1
 		if i < len(moves):
 			var next_move = moves[i]
 			# Spin 270 degrees clockwise on all turns. Looks kinda neat?
+			# It'd be nice if we did this counterclockwise for counterclockwise turns?
 			var target_rotation = U.rotation(next_move)
 			var current_rotation = U.rotation(move)
 			var diff = abs(current_rotation - target_rotation)
@@ -134,6 +147,13 @@ func move(node, moves):
 		t.start()
 		yield(t, "tween_all_completed")
 		pos = new_pos
+	
+	if node.should_teleport_on_next_move():
+		# A teleporter was the last tile that we reached while moving
+		teleport_node(node)
+
+	# if node.has_been_teleported():
+		# node.clear_teleportation_state()
 
 	t.call_deferred("queue_free")
 

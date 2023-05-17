@@ -34,6 +34,12 @@ func pos_(node):
 	var y = int(p.y / C.CELL_SIZE)
 	return v(x, y)
 
+func center_in_world(pos):
+	return pos + v(1, 1) * C.CELL_SIZE / 2
+
+func pos_to_world(pos):
+	return pos * C.CELL_SIZE + C.GRID_OFFSET
+
 func in_bounds(pos):
 	return pos.x >= 0 and pos.x < WIDTH and pos.y >= 0 and pos.y < HEIGHT
 
