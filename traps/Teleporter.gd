@@ -1,7 +1,11 @@
 extends GenericTrap
 
+var _sound_success = preload("res://sounds/teleportplayer.wav")
+var _sound_fail = preload("res://sounds/teleportenemy.wav")
+
 onready var area = $Area2D
 var _other_teleporter = null
+
 
 func all_teleporters_other_than_me():
 	var teleporters = get_tree().get_nodes_in_group("teleporter")
@@ -29,6 +33,16 @@ func get_other_teleporter():
 		find_other_teleporter()
 	return _other_teleporter
 
+func on_success():
+	audio_success.stream = sound_success
+	audio_success.play()
+	audio_success.volume_db = -15
+
+func on_fail():
+	audio_fail.stream = sound_fail
+	audio_fail.play()
+	audio_fail.volume_db = -15
+
 func teleport(node):
 	var other_teleporter = get_other_teleporter()
 
@@ -37,7 +51,7 @@ func teleport(node):
 		return
 	
 	if node.set_teleport_postiion_if_possible(U.pos_(other_teleporter)):
-		# Play a sound?
+		success_or_fail(node, true)
 		pulse()
 		other_teleporter.pulse()
 
@@ -58,3 +72,5 @@ func handle_area_exited(node):
 func _ready():
 	area.connect("area_entered", self, "handle_area_entered")
 	area.connect("area_exited", self, "handle_area_exited")
+	sound_success = _sound_success
+	sound_fail = _sound_fail

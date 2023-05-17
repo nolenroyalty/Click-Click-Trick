@@ -20,20 +20,20 @@ __meta__ = {
 position = Vector2( 97, 33 )
 
 [node name="BasicEnemy" parent="." instance=ExtResource( 4 )]
-position = Vector2( 225, 161 )
+position = Vector2( 225, 129 )
 
 [node name="Teleporter" parent="." instance=ExtResource( 6 )]
-position = Vector2( 33, 33 )
+position = Vector2( 33, 129 )
 
 [node name="Teleporter2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 161, 257 )
+position = Vector2( 193, 161 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1, 161 )
+position = Vector2( 161, 161 )
 
 [node name="OneWayArrow2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 33, 193 )
 
 [node name="OneWayArrow" parent="." instance=ExtResource( 7 )]
-position = Vector2( 193, 129 )
+position = Vector2( 193, 65 )
 INITIAL_ROTATION = 180

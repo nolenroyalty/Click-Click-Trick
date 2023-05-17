@@ -25,6 +25,6 @@ shape = SubResource( 1 )
 
 [node name="PulseTween" parent="." instance=ExtResource( 3 )]
 
-[node name="AudioSuccess" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioSuccess" type="AudioStreamPlayer" parent="."]
 
-[node name="AudioFail" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioFail" type="AudioStreamPlayer" parent="."]
