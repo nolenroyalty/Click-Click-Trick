@@ -19,6 +19,14 @@ func d(d_):
 		D.LEFT: return v(-1, 0)
 		D.RIGHT: return v(1, 0)
 
+func rotation(d):
+	match d:
+		D.NONE: return 0
+		D.UP: return 0
+		D.DOWN: return 180
+		D.LEFT: return 270
+		D.RIGHT: return 90
+
 func pos_(node):
 	# Account for the fact that our proper grid starts at 1, 1
 	var p = node.position - C.GRID_OFFSET

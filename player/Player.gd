@@ -1,8 +1,13 @@
 extends Moveable
 
+class_name Player
+
 enum S { RECORDING, MOVING }
 
 var state = S.RECORDING
+
+func _ready():
+	health = 2
 
 func add_move(move):
 	match move:

@@ -11,7 +11,7 @@ func d_player():
 	var my_pos = U.pos_(self)
 	var player_pos = U.pos_(player)
 	return player_pos - my_pos
-	
+
 func moves_to_take_to_player():
 	var d = d_player()
 	# For our first move, we look at whether the distance in the x or y distance is larger and shrink that.
@@ -47,7 +47,20 @@ func moves_to_take_to_player():
 				d.y += 1
 	return next_moves
 
+func die():
+	# Sound effect?
+	var t = Tween.new()
+	var init = Color(1, 1, 1, 1)
+	var final = Color(1, 1, 1, 0)
+	t.interpolate_property(sprite, "modulate", init, final, U.beat_time / 2.0, Tween.TRANS_QUAD, Tween.EASE_IN)
+	add_child(t)
+	t.start()
+	yield(t, "tween_completed")
+	self.call_deferred("queue_free")
+	# t.connect("tween_completed", self, "queue_free")
+	
 func tick(beat):
+	if dead: return
 	match beat:
 		U.BEAT.NOOP:
 			orient_for_first_move()

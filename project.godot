@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Moveable",
 "language": "GDScript",
 "path": "res://moveables/Moveable.gd"
+}, {
+"base": "Moveable",
+"class": "Player",
+"language": "GDScript",
+"path": "res://player/Player.gd"
 } ]
 _global_script_class_icons={
-"Moveable": ""
+"Moveable": "",
+"Player": ""
 }
 
 [application]

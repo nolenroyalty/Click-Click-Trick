@@ -12,6 +12,7 @@ var beat_count = 0
 var state = S.WAIT
 var width = 0
 var height = 0
+var dead_enemies = {}
 
 func get_beat():
 	return _beats()[beat_count]
@@ -33,7 +34,7 @@ func execute_tick():
 
 	match beat:
 		U.BEAT.NOOP:
-			# Remove dead enemies
+			clear_dead_enemies()
 			# Maybe reset music if it's way off?
 			pass
 		U.BEAT.SHOW: pass
@@ -55,13 +56,14 @@ func clear_move_state():
 func move_player():
 	var moves = player.get_moves()
 	move(player, moves)
-			
-func _process(_delta):
-	match state:
-		S.WAIT:
-			pass
-		S.TICKING:
-			pass
+
+func clear_dead_enemies():
+	for enemy in dead_enemies:
+		enemy.die()
+	dead_enemies = {}
+ 
+func handle_enemy_died(enemy):
+	dead_enemies[enemy] = true
 
 func move_enemies():
 	for enemy in get_enemies():
@@ -74,6 +76,7 @@ func tick_enemies(beat):
 func init_enemies():
 	for enemy in get_enemies():
 		enemy.init(player)
+		enemy.connect("died", self, "handle_enemy_died", [enemy])
 
 func tick_traps(beat):
 	for trap in get_traps():
@@ -98,31 +101,32 @@ func move(node, moves):
 	var total_time = U.beat_time / 2
 	var each_move_time = total_time / len(moves)
 	var pos = U.pos_(node)
-	# var final_pos
-
 	var t = Tween.new()
 	add_child(t)
 
+	var i = 0
 	for move in moves:
+		if node in dead_enemies:
+			break
 		var new_pos = pos + U.d(move)
 		var clamped = new_pos
 		clamped.x = clamp(new_pos.x, 0, width - 1)
 		clamped.y = clamp(new_pos.y, 0, height - 1)
-		# Add a rotation animation here?
-		# final_pos = clamped
 
 		var move_to = clamped * C.CELL_SIZE + C.GRID_OFFSET
 		t.interpolate_property(node, "position", null, move_to, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		i += 1
+		if i < len(moves):
+			var next_move = moves[i]
+			var target_rotation = U.rotation(next_move)
+			if move == U.D.UP and next_move == U.D.LEFT:
+				target_rotation = -90
+			t.interpolate_property(node.sprite, "rotation_degrees", null, target_rotation, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		t.start()
-		yield(t, "tween_completed")
+		yield(t, "tween_all_completed")
 		pos = new_pos
-	
-	node.position = pos * C.CELL_SIZE + C.GRID_OFFSET
 
 	t.call_deferred("queue_free")
-	# node.position = clamped * C.CELL_SIZE + C.GRID_OFFSET
-	# if clamped != new_pos: return false
-	# else: return true
 
 func get_enemies():
 	var e = []
