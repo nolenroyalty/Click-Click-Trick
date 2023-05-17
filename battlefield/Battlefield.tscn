@@ -12,19 +12,19 @@ script = ExtResource( 3 )
 
 [node name="Grid" parent="." instance=ExtResource( 1 )]
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1, 161 )
-
 [node name="BeatTimer" type="Timer" parent="."]
-
-[node name="BasicEnemy" parent="." instance=ExtResource( 4 )]
-position = Vector2( 225, 193 )
 
 [node name="Zone" parent="." instance=ExtResource( 5 )]
 position = Vector2( 97, 129 )
+
+[node name="BasicEnemy" parent="." instance=ExtResource( 4 )]
+position = Vector2( 225, 193 )
 
 [node name="Teleporter" parent="." instance=ExtResource( 6 )]
 position = Vector2( 1, 97 )
 
 [node name="Teleporter2" parent="." instance=ExtResource( 6 )]
 position = Vector2( 161, 289 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 1, 161 )

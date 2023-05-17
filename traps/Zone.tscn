@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://traps/sprites/zone2.png" type="Texture" id=1]
+[ext_resource path="res://traps/sprites/zone3.png" type="Texture" id=1]
 [ext_resource path="res://traps/Zone.gd" type="Script" id=2]
 [ext_resource path="res://effects/PulseTween.tscn" type="PackedScene" id=3]
 
@@ -8,6 +8,7 @@
 extents = Vector2( 32, 32 )
 
 [node name="Zone" type="Node2D" groups=["trap"]]
+z_index = -1
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

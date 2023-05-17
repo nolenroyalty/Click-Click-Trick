@@ -68,8 +68,6 @@ func display_pathing():
 			
 			square.position = U.pos_to_world(d)
 			get_parent().add_child(square)
-			if is_player:
-				print("p %s s %s" % [global_position, square.global_position])
 			square.init(is_player, move, next_move)
 			current_pathing_squares.append(square)
 			pos = d
@@ -115,6 +113,8 @@ func get_moves():
 
 func pulse():
 	pulse_tween.pulse(U.v(1.2, 1.2))
+	for square in current_pathing_squares:
+		square.pulse()
 
 func emit_died():
 	print("I died! %s" % [ self ])

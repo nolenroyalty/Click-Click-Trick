@@ -1,7 +1,7 @@
 extends Node2D
 
 onready var area = $Area2D
-var rng
+var other_teleporter = null
 
 func all_teleporters_other_than_me():
 	var teleporters = get_tree().get_nodes_in_group("teleporter")
@@ -13,23 +13,36 @@ func all_teleporters_other_than_me():
 			teleporters_other_than_me.append(teleporter)
 	return teleporters_other_than_me
 
-func pick_a_teleporter():
+func find_other_teleporter():
 	var teleporters_other_than_me = all_teleporters_other_than_me()
-	if teleporters_other_than_me == null: return null
+	if teleporters_other_than_me == null:
+		print("Likely bug - didn't find any other teleporters %s" % [self])
+		return null
+	if len(teleporters_other_than_me) > 1:
+		print("Likely bug - found too many other teleporters! %s" % [self])
+		return null
 	
-	var teleporter = teleporters_other_than_me[rng.randi() % len(teleporters_other_than_me)]
-	return teleporter
+	other_teleporter = teleporters_other_than_me[0]
+
+func get_other_teleporter():
+	if other_teleporter == null:
+		find_other_teleporter()
+	return other_teleporter
+
+func pulse():
+	$PulseTween.pulse()
 
 func teleport(node):
-	var teleporter = pick_a_teleporter()
+	var teleporter = get_other_teleporter()
 
-	if teleporter == null: 
-		print("Likely bug: tried to teleport %s but there were no teleporters other than me (%s)" % [node, self])
+	if teleporter == null:
+		print("No other teleporter - can't teleport %s - bailing %s" % [node, self])
 		return
 	
 	if node.set_teleport_postiion_if_possible(U.pos_(teleporter)):
 		# Play a sound?
-		$PulseTween.pulse()
+		pulse()
+		teleporter.pulse()
 
 func handle_area_entered(node):
 	var parent = node.get_parent()
@@ -48,7 +61,5 @@ func handle_area_exited(node):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	rng = RandomNumberGenerator.new()
-	rng.randomize()
 	area.connect("area_entered", self, "handle_area_entered")
 	area.connect("area_exited", self, "handle_area_exited")
