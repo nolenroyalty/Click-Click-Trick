@@ -22,32 +22,35 @@ __meta__ = {
 position = Vector2( 33, 33 )
 
 [node name="BasicEnemy" parent="." instance=ExtResource( 4 )]
-position = Vector2( 289, 225 )
+position = Vector2( 161, 289 )
 
 [node name="Teleporter" parent="." instance=ExtResource( 6 )]
-position = Vector2( 33, 129 )
+position = Vector2( 33, 193 )
 
 [node name="Teleporter2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 225, 97 )
+position = Vector2( 289, 257 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1, 129 )
 
 [node name="OneWayArrow2" parent="." instance=ExtResource( 7 )]
-position = Vector2( 33, 193 )
+position = Vector2( 161, 193 )
 
 [node name="OneWayArrow" parent="." instance=ExtResource( 7 )]
-position = Vector2( 193, 225 )
+position = Vector2( 225, 225 )
 INITIAL_ROTATION = 180
 
 [node name="Fixed" parent="." instance=ExtResource( 8 )]
-position = Vector2( 257, 289 )
+position = Vector2( 225, 289 )
 
 [node name="Fixed2" parent="." instance=ExtResource( 8 )]
-position = Vector2( 257, 257 )
+position = Vector2( 225, 257 )
 
 [node name="Fixed3" parent="." instance=ExtResource( 8 )]
-position = Vector2( 257, 97 )
+position = Vector2( 257, 193 )
+
+[node name="Fixed4" parent="." instance=ExtResource( 8 )]
+position = Vector2( 289, 193 )
 
 [node name="HalfBeat" parent="." instance=ExtResource( 9 )]
-position = Vector2( 97, 161 )
+position = Vector2( 193, 225 )
