@@ -17,7 +17,7 @@ __meta__ = {
 }
 
 [node name="Zone" parent="." instance=ExtResource( 5 )]
-position = Vector2( 97, 33 )
+position = Vector2( 33, 33 )
 
 [node name="BasicEnemy" parent="." instance=ExtResource( 4 )]
 position = Vector2( 225, 129 )
@@ -35,5 +35,5 @@ position = Vector2( 161, 161 )
 position = Vector2( 33, 193 )
 
 [node name="OneWayArrow" parent="." instance=ExtResource( 7 )]
-position = Vector2( 193, 65 )
+position = Vector2( 193, 129 )
 INITIAL_ROTATION = 180

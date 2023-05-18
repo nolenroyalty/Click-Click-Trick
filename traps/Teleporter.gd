@@ -4,6 +4,7 @@ var _sound_success = preload("res://sounds/teleportplayer.wav")
 var _sound_fail = preload("res://sounds/teleportenemy.wav")
 
 onready var area = $Area2D
+onready var grid_tween = $GridTween
 var _other_teleporter = null
 
 
@@ -43,6 +44,14 @@ func on_fail():
 	audio_fail.play()
 	audio_fail.volume_db = -15
 
+func pulse(amount=U.v(0.9, 0.9)):
+	# This syntax is insane
+	.pulse(amount)
+
+func pulse_full():
+	pulse(U.v(0.5, 0.5))
+	grid_tween.pulse()
+
 func teleport(node):
 	var other_teleporter = get_other_teleporter()
 
@@ -52,8 +61,14 @@ func teleport(node):
 	
 	if node.set_teleport_postiion_if_possible(U.pos_(other_teleporter)):
 		success_or_fail(node, true)
-		pulse()
-		other_teleporter.pulse()
+		pulse_full()
+		other_teleporter.pulse_full()
+
+func tick(beat):
+	match beat:
+		U.BEAT.NOOP: pass
+		U.BEAT.SHOW: pulse()
+		U.BEAT.MOVE: pass
 
 func handle_area_entered(node):
 	var moveable = moveable_of_area(node)
@@ -74,3 +89,4 @@ func _ready():
 	area.connect("area_exited", self, "handle_area_exited")
 	sound_success = _sound_success
 	sound_fail = _sound_fail
+	grid_tween.target = $Grid

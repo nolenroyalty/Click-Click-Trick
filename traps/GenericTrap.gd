@@ -37,8 +37,9 @@ func success_or_fail(moveable, triggering_is_good=false):
 	
 	return true
 
-func pulse():
-	pulse_tween.pulse()
+func pulse(amount=null):
+	if amount: pulse_tween.pulse(amount)
+	else: pulse_tween.pulse()
 
 func moveable_of_area(area):
 	var moveable = area.get_parent()

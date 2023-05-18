@@ -1,7 +1,7 @@
 extends Tween
 
 # Attach to any node with a Sprite child and call pulse() to make it pulse.
-var target
+var target = null
 var property = "scale"
 
 func interp(time, start, end):
@@ -23,5 +23,5 @@ func pulse(amount = U.v(1.1, 1.1)):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var parent = get_parent()
-	if parent.has_node("Sprite"):
+	if parent.has_node("Sprite") and target == null:
 		target = parent.get_node("Sprite")
