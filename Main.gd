@@ -35,11 +35,17 @@ func stop_music():
 	beat_timer.stop()
 	MusicLoop.stop()
 
+var started = false
+
+func _process(_delta):
+	if Input.is_action_just_pressed("ui_accept") and not started:
+		start_music()
+		started = true
+
 func _ready():
 	VisualServer.set_default_clear_color(Color("#1b1b17"))
 	U.set_bpm(_bpm())
 	counter.init(len(_beats()))
-	start_music()
 
 func incr_beat():
 	beat_count = (beat_count + 1) % len(_beats())
