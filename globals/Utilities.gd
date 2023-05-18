@@ -29,17 +29,15 @@ func rotation(d):
 		D.RIGHT: return 90
 
 func pos_(node):
-	# Account for the fact that our proper grid starts at 1, 1
-	var p = node.position - C.GRID_OFFSET
-	var x = int(p.x / C.CELL_SIZE)
-	var y = int(p.y / C.CELL_SIZE)
+	var x = int(node.position.x / C.CELL_SIZE)
+	var y = int(node.position.y / C.CELL_SIZE)
 	return v(x, y)
 
 func center_in_world(pos):
 	return pos + v(1, 1) * C.CELL_SIZE / 2
 
 func pos_to_world(pos):
-	return pos * C.CELL_SIZE + C.GRID_OFFSET
+	return pos * C.CELL_SIZE
 
 func in_bounds(pos):
 	return pos.x >= 0 and pos.x < WIDTH and pos.y >= 0 and pos.y < HEIGHT and not is_blocked(pos)

@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name BattleField
+
 onready var player = $Player
 
 var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
@@ -7,33 +9,29 @@ var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
 var track = TRACKS[0]
 var beat_count = 0
-var width = 0
-var height = 0
 var dead_enemies = {}
 
 func tick(beat):
-	player.tick(beat)
-	tick_enemies(beat)
-	tick_traps(beat)
+	broadcast_tick(beat)
 
 	match beat:
 		U.BEAT.NOOP:
 			clear_dead_enemies()
-			# Maybe reset music if it's way off?
-			pass
 		U.BEAT.SHOW: 
 			pass
-			# $Grid.pulse()
 		U.BEAT.MOVE:
-			$Grid.pulse()
 			move_player()
 			move_enemies()
 			clear_move_state()
-			# Collision won't fire on this frame, so we can't handle
-			# collisions here. We can either handle them on the next beat
-			# (probably awkward from a gameplay perspective) or we can
-			# handle them in the relevant trap code as they trigger.
-			# I think the latter is the better option.
+
+func broadcast_tick(beat):
+	for enemy in get_enemies():
+		enemy.tick(beat)
+
+	for trap in get_traps():
+		trap.tick(beat)
+		
+	player.tick(beat)
 
 func clear_move_state():
 	player.clear_move_state()
@@ -56,18 +54,10 @@ func move_enemies():
 	for enemy in get_enemies():
 		move(enemy, enemy.get_moves())
 
-func tick_enemies(beat):
-	for enemy in get_enemies():
-		enemy.tick(beat)
-
 func init_enemies():
 	for enemy in get_enemies():
 		enemy.init(player)
 		enemy.connect("died", self, "handle_enemy_died", [enemy])
-
-func tick_traps(beat):
-	for trap in get_traps():
-		trap.tick(beat)
 
 func teleport_node(node):
 	node.position = U.pos_to_world(node.teleport_to)
@@ -99,8 +89,8 @@ func move(node, moves):
 
 		var new_pos = pos + U.d(move)
 		var clamped = new_pos
-		clamped.x = clamp(new_pos.x, 0, width - 1)
-		clamped.y = clamp(new_pos.y, 0, height - 1)
+		clamped.x = clamp(new_pos.x, 0, U.WIDTH - 1)
+		clamped.y = clamp(new_pos.y, 0, U.HEIGHT - 1)
 
 		if U.is_blocked(clamped):
 			continue
@@ -148,7 +138,3 @@ func get_traps():
 
 func _ready():
 	init_enemies()
-	width = $Grid.width
-	height = $Grid.height
-	U.WIDTH = width
-	U.HEIGHT = height

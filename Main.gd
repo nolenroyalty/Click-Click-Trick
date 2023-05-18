@@ -1,6 +1,7 @@
 extends Node2D
 
 onready var battlefield = $Battlefield
+onready var outline = $BattlefieldOutline
 onready var counter = $Counter
 onready var beat_timer = $BeatTimer
 
@@ -20,7 +21,8 @@ func execute_tick():
 	var beat = get_beat()
 	incr_beat()
 	battlefield.tick(beat)
-	counter.tick(beat)
+	counter.tick(beat)	
+	outline.tick(beat)
 
 func start_music():
 	state = S.TICKING
