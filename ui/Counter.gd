@@ -21,6 +21,8 @@ func reset_and_count_down_color_rect():
 func init(bcm):
 	self.beat_count_max = bcm
 	self.beat = bcm
+	beat_count_label.text = "1"
+	color_rect.rect_scale.x = 1.0
 
 func spin_label(new_beat):
 	var time = U.beat_time / 2.0

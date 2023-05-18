@@ -1,6 +1,6 @@
 extends Node2D
 
-class_name BattleField
+class_name Battlefield
 
 onready var player = $Player
 
@@ -8,7 +8,6 @@ var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
 var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
 var track = TRACKS[0]
-var beat_count = 0
 var dead_enemies = {}
 
 func tick(beat):

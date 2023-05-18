@@ -10,7 +10,7 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node2D",
-"class": "BattleField",
+"class": "Battlefield",
 "language": "GDScript",
 "path": "res://battlefield/Battlefield.gd"
 }, {
@@ -30,7 +30,7 @@ _global_script_classes=[ {
 "path": "res://player/Player.gd"
 } ]
 _global_script_class_icons={
-"BattleField": "",
+"Battlefield": "",
 "GenericTrap": "",
 "Moveable": "",
 "Player": ""

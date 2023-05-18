@@ -15,6 +15,7 @@ func track(t):
 			return null
 
 func begin_playing(track_):
+	seek(0)
 	stream = track(track_)
 	playing = true
 
