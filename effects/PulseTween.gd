@@ -3,6 +3,7 @@ extends Tween
 # Attach to any node with a Sprite child and call pulse() to make it pulse.
 var target = null
 var property = "scale"
+var final_amount = U.v(1, 1)
 
 func interp(time, start, end):
 	var _ignore = interpolate_property(target, property, start, end, time, TRANS_QUAD, EASE_OUT)
@@ -17,7 +18,7 @@ func pulse(amount = U.v(1.1, 1.1)):
 	interp(time, null, amount)
 	var _ignore = start()
 	yield(self, "tween_completed")
-	interp(time, null, U.v(1, 1))
+	interp(time, null, final_amount)
 	_ignore = start()
 
 # Called when the node enters the scene tree for the first time.

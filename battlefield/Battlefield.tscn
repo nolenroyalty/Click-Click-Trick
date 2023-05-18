@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://battlefield/GridBackground.tscn" type="PackedScene" id=1]
 [ext_resource path="res://player/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://traps/Zone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://traps/Teleporter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://traps/OneWayArrow.tscn" type="PackedScene" id=7]
+[ext_resource path="res://traps/Fixed.tscn" type="PackedScene" id=8]
+[ext_resource path="res://traps/HalfBeat.tscn" type="PackedScene" id=9]
 
 [node name="Battlefield" type="Node2D"]
 script = ExtResource( 3 )
@@ -20,20 +22,32 @@ __meta__ = {
 position = Vector2( 33, 33 )
 
 [node name="BasicEnemy" parent="." instance=ExtResource( 4 )]
-position = Vector2( 225, 129 )
+position = Vector2( 289, 225 )
 
 [node name="Teleporter" parent="." instance=ExtResource( 6 )]
 position = Vector2( 33, 129 )
 
 [node name="Teleporter2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 193, 161 )
+position = Vector2( 225, 97 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 161, 161 )
+position = Vector2( 1, 129 )
 
 [node name="OneWayArrow2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 33, 193 )
 
 [node name="OneWayArrow" parent="." instance=ExtResource( 7 )]
-position = Vector2( 193, 129 )
+position = Vector2( 193, 225 )
 INITIAL_ROTATION = 180
+
+[node name="Fixed" parent="." instance=ExtResource( 8 )]
+position = Vector2( 257, 289 )
+
+[node name="Fixed2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 257, 257 )
+
+[node name="Fixed3" parent="." instance=ExtResource( 8 )]
+position = Vector2( 257, 97 )
+
+[node name="HalfBeat" parent="." instance=ExtResource( 9 )]
+position = Vector2( 97, 161 )

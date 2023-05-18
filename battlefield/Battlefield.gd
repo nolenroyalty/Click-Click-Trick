@@ -102,6 +102,9 @@ func move(node, moves):
 		clamped.x = clamp(new_pos.x, 0, width - 1)
 		clamped.y = clamp(new_pos.y, 0, height - 1)
 
+		if U.is_blocked(clamped):
+			continue
+
 		var move_to = U.pos_to_world(clamped)
 		t.interpolate_property(node, "position", null, move_to, each_move_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		i += 1

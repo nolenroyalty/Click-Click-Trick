@@ -60,16 +60,21 @@ func stop_tracking(area):
 	if not tracking.erase(moveable):
 		print("Potential bug: stopped tracking %s but we weren't tracking it! - %s" % [moveable, self])
 
-func on_fail():
-	play_fail()
+func pulse_red():
 	var time = U.beat_time / 3
-	pulse()
-	var default = Color("#30408c")
-	var red = Color("#8e3a47")
-	tween.interpolate_property(self, "modulate", default, red, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	tween.interpolate_property(self, "modulate", red, default, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time)
+	tween.interpolate_property(self, "modulate", C.BLUE, C.RED, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	tween.interpolate_property(self, "modulate", C.RED, C.BLUE, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time)
 	tween.start()
 
+func on_fail():
+	play_fail()
+	pulse()
+	pulse_red()
+
+func on_success():
+	play_success()
+	pulse()
+	pulse_red()
 
 func penalize_wrong_directions():
 	for moveable in tracking.keys():

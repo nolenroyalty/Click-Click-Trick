@@ -10,6 +10,7 @@ var HEIGHT
 
 var bpm = 0 setget set_bpm
 var beat_time = 0
+var blocked_squares = {}
 
 func d(d_):
 	match d_:
@@ -41,8 +42,17 @@ func pos_to_world(pos):
 	return pos * C.CELL_SIZE + C.GRID_OFFSET
 
 func in_bounds(pos):
-	return pos.x >= 0 and pos.x < WIDTH and pos.y >= 0 and pos.y < HEIGHT
+	return pos.x >= 0 and pos.x < WIDTH and pos.y >= 0 and pos.y < HEIGHT and not is_blocked(pos)
 
 func set_bpm(bpm_):
 	bpm = bpm_
 	beat_time = 60.0 / bpm
+
+func add_blocked_square(node):
+	blocked_squares[pos_(node)] = true
+
+func is_blocked(pos):
+	return pos in blocked_squares
+
+func clear_blocked_squares():
+	blocked_squares = {}
