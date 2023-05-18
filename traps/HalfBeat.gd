@@ -1,5 +1,8 @@
 extends GenericTrap
 
+# Originally this fired on the and of four (thus HalfBeat) but I realized that firing on 1 was almost as good
+# and much easier to reason about. It'd still be cool to add some kind of timing element to the game though.
+
 onready var grid_tween = $GridTween
 onready var half_beat_tween = $HalfBeatTween
 
@@ -19,13 +22,8 @@ func tween_half(property, start, end, duration, delay):
 
 func pulse_center_red():
 	var half_beat = U.beat_time / 2
-	# var quarter_beat = U.beat_time / 4
 	var full = U.v(1, 1)
 	var double = U.v(2, 2)
-	# tween_half("scale", full, double, quarter_beat, half_beat)
-	# tween_half("modulate", BLUE_TRANSPARENT, RED_TRANSPARENT, quarter_beat, half_beat)
-	# tween_half("scale", double, full, quarter_beat, quarter_beat + half_beat)
-	# tween_half("modulate", RED_TRANSPARENT, BLUE_TRANSPARENT, quarter_beat, quarter_beat + half_beat)
 	firing = true
 	tween_half("scale", full, double, half_beat, 0)
 	tween_half("modulate", BLUE_TRANSPARENT, RED_TRANSPARENT, half_beat, 0)
@@ -34,10 +32,6 @@ func pulse_center_red():
 	half_beat_tween.start()
 	yield(half_beat_tween, "tween_all_completed")
 	firing = false
-	# yield(get_tree().create_timer(half_beat + quarter_beat), "timeout")
-	# firing = true
-	# yield(get_tree().create_timer(quarter_beat), "timeout")
-	# firing = false
 
 func clear_penalties():
 	penalized = {}
@@ -70,8 +64,6 @@ func tick(beat):
 		U.BEAT.SHOW: pulse()
 		U.BEAT.MOVE:
 			pulse()
-			# clear_penalties()
-			# pulse_center_red()
 
 func _ready():
 	pulse_tween.target = $Center
