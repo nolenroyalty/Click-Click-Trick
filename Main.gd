@@ -14,16 +14,17 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 4
+var level_index = 5
 var level
 var initial_load = true
   
 var LEVELS = [
 	preload("res://levels/Sandbox.tscn"),
-	preload("res://levels/Level1.tscn"),
+	preload("res://levels/Level1.tscn"), # 1
 	preload("res://levels/LevelIntroduceDefeatEnemy.tscn"),
 	preload("res://levels/LevelIntroduceTeleporter.tscn"),
 	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"),
+	preload("res://levels/LevelTeleportEnemyOut.tscn"), # 5
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 

@@ -188,7 +188,7 @@ func get_traps():
 func handle_goal_status_update(status):
 	goal_reached = status
 
-class AStarPreferUp:
+class AStarPreferTeleporters:
 	extends AStar2D
 
 	func _compute_cost(from, _to):
@@ -196,7 +196,7 @@ class AStarPreferUp:
 		# var to_pos = U.pathing_id_to_pos(to)
 
 		if U.should_try_to_path_through(from_pos):
-			return 0.5
+			return 0.75
 		else:
 			return 1.0
 
@@ -204,7 +204,7 @@ class AStarPreferUp:
 		_compute_cost(from_id, to_id)
 
 func generate_pathing():
-	var astar = AStarPreferUp.new()
+	var astar = AStarPreferTeleporters.new()
 
 	for x in range(C.WIDTH):
 		for y in range(C.HEIGHT):
@@ -215,10 +215,6 @@ func generate_pathing():
 			# Don't path through walls
 			if U.is_blocked(pos):
 				astar.set_point_disabled(id, true)
-
-			# Try to path through teleporters
-			# if U.should_try_to_path_through(pos):
-				# astar.set_point_weight_scale(id, 0.5)
 
 	for x in range(C.WIDTH):
 		for y in range(C.HEIGHT):
