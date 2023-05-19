@@ -8,7 +8,9 @@ enum BEAT { NOOP = 1, SHOW = 2, MOVE = 3 }
 
 var bpm = 0 setget set_bpm
 var beat_time = 0
+var PATHING
 var blocked_squares = {}
+var path_through = {}
 
 func d(d_):
 	match d_:
@@ -50,5 +52,19 @@ func add_blocked_square(node):
 func is_blocked(pos):
 	return pos in blocked_squares
 
-func clear_blocked_squares():
+# We encourage the enemy to path through teleporters
+func should_try_to_path_through(pos):
+	return pos in path_through
+
+func add_should_try_to_path_through(node):
+	path_through[pos_(node)] = true
+
+func clear_tracked_squares():
 	blocked_squares = {}
+	path_through = {}
+
+func pathing_id(pos):
+	return (int(pos.x) << 8) | int(pos.y)
+
+func pathing_id_to_pos(id):
+	return v(int(id) >> 8, int(id) & 0xFF)

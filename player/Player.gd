@@ -7,8 +7,8 @@ const NUMBER_OF_MOVES_WE_CAN_TAKE = 3
 onready var audio = $AudioStreamPlayer2D
 var move_fail_sound = preload("res://sounds/unable-to-perform.wav")
 
-enum S { RECORDING, MOVING, FINISHED }
-var state = S.RECORDING
+enum S { LOADING, RECORDING, MOVING, FINISHED }
+var state = S.LOADING
 
 func this_would_put_us_out_of_bounds(moves_):
 	var summed = sum_d_moves(moves_)
@@ -75,6 +75,7 @@ func tick(beat):
 
 func _process(_delta):
 	match state:
+		S.LOADING: pass
 		S.MOVING: pass
 		S.RECORDING:
 			var move = get_move()

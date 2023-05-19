@@ -13,13 +13,17 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 0
+var level_index = 4
 var level
 var initial_load = true
 
 var LEVELS = [
 	preload("res://levels/Sandbox.tscn"),
 	preload("res://levels/Level1.tscn"),
+	preload("res://levels/LevelIntroduceDefeatEnemy.tscn"),
+	preload("res://levels/LevelIntroduceTeleporter.tscn"),
+	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"),
+	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
 func handle_level_completed(index):
@@ -36,11 +40,17 @@ func handle_level_completed(index):
 	stop_music()
 	beat_timer.stop()
 	level.call_deferred("queue_free")
+	
+	# It's ugly that we do this here instead of in Battlefield, but it ensures that we do this
+	# after prior resources have loaded and before the next ones do
+	U.clear_tracked_squares()
 
 	level_index += 1
 	if level_index >= len(LEVELS):
-		level_index = 0
-	
+		print("WON THE GAME!!!")
+		# Do Something Here
+		return
+
 	load_level(level_index)
 
 func load_level(index):
@@ -51,6 +61,7 @@ func load_level(index):
 		level.call_deferred("queue_free")
 
 	level = LEVELS[index].instance()
+
 	track = level.track
 	beat_count = 0
 	level.position = LEVEL_POSITION

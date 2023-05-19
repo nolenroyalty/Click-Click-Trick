@@ -188,6 +188,53 @@ func get_traps():
 func handle_goal_status_update(status):
 	goal_reached = status
 
+class AStarPreferUp:
+	extends AStar2D
+
+	func _compute_cost(from, to):
+		var from_pos = U.pathing_id_to_pos(from)
+		var to_pos = U.pathing_id_to_pos(to)
+
+		if (to_pos - from_pos) == U.v(0, -1):
+			return 1.75
+		else:
+			return 2
+	
+	# func _estimate_cost(from_id, to_id):
+	# 	_compute_cost(from_id, to_id)
+
+func generate_pathing():
+	var astar = AStarPreferUp.new()
+
+	for x in range(C.WIDTH):
+		for y in range(C.HEIGHT):
+			var pos = U.v(x, y)
+			var id = U.pathing_id(pos)
+			astar.add_point(id, pos)
+
+			# Don't path through walls
+			if U.is_blocked(pos):
+				astar.set_point_disabled(id, true)
+
+			# Try to path through teleporters
+			if U.should_try_to_path_through(pos):
+				astar.set_point_weight_scale(id, 0.5)
+
+	for x in range(C.WIDTH):
+		for y in range(C.HEIGHT):
+			var pos = U.v(x, y)
+			for direction in [U.D.LEFT, U.D.UP, U.D.RIGHT, U.D.DOWN]:
+				var neighbor = pos + U.d(direction)
+
+				if not U.in_bounds(neighbor):
+					continue
+				
+				astar.connect_points(U.pathing_id(pos), U.pathing_id(neighbor), true)
+	
+	return astar
+
+
 func _ready():
 	init_moveables()
 	goal.connect("goal_status", self, "handle_goal_status_update")
+	U.PATHING = generate_pathing()

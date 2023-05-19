@@ -12,6 +12,31 @@ func d_player():
 	var player_pos = U.pos_(player)
 	return player_pos - my_pos
 
+# func calculate_weightings(moves):
+# 	var start_weight = pow(2, number_of_moves)
+# 	var weights = U.v()
+
+func pick_a_move(pos, player_pos):
+	var d = player_pos - pos
+	var xabs = abs(d.x)
+	var yabs = abs(d.y)
+
+	var proposed_move = U.D.NONE	
+
+	if xabs > yabs:
+		if d.x > 0:
+			return U.D.RIGHT
+		else:
+			return U.D.LEFT
+	else:
+		if d.y > 0:
+			return U.D.DOWN
+		else:
+			return U.D.UP
+
+func evaluate_move(prior_moves):
+	pass
+
 func moves_to_take_to_player():
 	var d = d_player()
 	# For our first move, we look at whether the distance in the x or y distance is larger and shrink that.
@@ -47,6 +72,42 @@ func moves_to_take_to_player():
 				d.y += 1
 	return next_moves
 
+func pathing_moves():
+	var my_pos = U.pos_(self)
+	var player_pos = U.pos_(player)
+	var path = U.PATHING.get_point_path(U.pathing_id(my_pos), U.pathing_id(player_pos))
+
+	var next_moves = []
+	
+	var current_pos = my_pos
+	for point in path:
+		var d = point - current_pos
+		var dir = U.D.NONE
+		var should_continue = false
+
+		match [int(d.x), int(d.y)]:
+			[0, 0]:
+				should_continue = true
+			[0, -1]: dir = U.D.UP
+			[0, 1]: dir = U.D.DOWN
+			[-1, 0]: dir = U.D.LEFT
+			[1, 0]: dir = U.D.RIGHT
+			_:
+				print("BUG: Unexpected pathing info received %s -> %s : (%s, %s)" % [current_pos, point, d.x, d.y])
+				should_continue = true
+		
+		if should_continue: continue
+		
+		if dir != U.D.NONE:
+			current_pos = point
+			next_moves.append(dir)
+			if len(next_moves) >= number_of_moves:
+				break
+	
+	return next_moves
+
+
+
 func die():
 	# Sound effect?
 	var t = Tween.new()
@@ -64,7 +125,8 @@ func tick(beat):
 			direction_right_this_second = U.D.NONE
 			orient_for_first_move()
 		U.BEAT.SHOW:
-			moves = moves_to_take_to_player()
+			# moves = moves_to_take_to_player()
+			moves = pathing_moves()
 			orient_for_first_move()
 			display_pathing()
 			pulse()
