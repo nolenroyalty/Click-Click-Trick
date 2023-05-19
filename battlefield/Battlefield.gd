@@ -191,17 +191,17 @@ func handle_goal_status_update(status):
 class AStarPreferUp:
 	extends AStar2D
 
-	func _compute_cost(from, to):
+	func _compute_cost(from, _to):
 		var from_pos = U.pathing_id_to_pos(from)
-		var to_pos = U.pathing_id_to_pos(to)
+		# var to_pos = U.pathing_id_to_pos(to)
 
-		if (to_pos - from_pos) == U.v(0, -1):
-			return 1.75
+		if U.should_try_to_path_through(from_pos):
+			return 0.5
 		else:
-			return 2
-	
-	# func _estimate_cost(from_id, to_id):
-	# 	_compute_cost(from_id, to_id)
+			return 1.0
+
+	func _estimate_cost(from_id, to_id):
+		_compute_cost(from_id, to_id)
 
 func generate_pathing():
 	var astar = AStarPreferUp.new()
@@ -217,8 +217,8 @@ func generate_pathing():
 				astar.set_point_disabled(id, true)
 
 			# Try to path through teleporters
-			if U.should_try_to_path_through(pos):
-				astar.set_point_weight_scale(id, 0.5)
+			# if U.should_try_to_path_through(pos):
+				# astar.set_point_weight_scale(id, 0.5)
 
 	for x in range(C.WIDTH):
 		for y in range(C.HEIGHT):

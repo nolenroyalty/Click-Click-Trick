@@ -21,8 +21,6 @@ func pick_a_move(pos, player_pos):
 	var xabs = abs(d.x)
 	var yabs = abs(d.y)
 
-	var proposed_move = U.D.NONE	
-
 	if xabs > yabs:
 		if d.x > 0:
 			return U.D.RIGHT
@@ -33,9 +31,6 @@ func pick_a_move(pos, player_pos):
 			return U.D.DOWN
 		else:
 			return U.D.UP
-
-func evaluate_move(prior_moves):
-	pass
 
 func moves_to_take_to_player():
 	var d = d_player()

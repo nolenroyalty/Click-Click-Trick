@@ -90,3 +90,5 @@ func _ready():
 	sound_success = _sound_success
 	sound_fail = _sound_fail
 	grid_tween.target = $Grid
+
+	U.add_should_try_to_path_through(self)

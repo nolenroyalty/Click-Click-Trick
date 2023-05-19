@@ -13,8 +13,6 @@ func gently_fade(time):
 	add_child(t)
 	t.start()
 	yield(t, "tween_completed")
-	state = S.STOPPED
-	playing = false
 	
 func track(t):
 	match t:
