@@ -9,16 +9,26 @@ var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
 var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
 onready var player = $Player
+onready var foreground = $ForegroundHolder/Foreground
+
 var track = TRACKS[0]
 var dead_enemies = {}
 var won = false
 
-func gently_fade(time_to_take):
+func fade_foreground(start_color, end_color, time_to_take):
 	var t = Tween.new()
-	t.interpolate_property($ForegroundHolder/Foreground, "color", null, C.WHITE, 
-		time_to_take, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	t.interpolate_property(foreground, "color", start_color, end_color, time_to_take, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 	add_child(t)
 	t.start()
+
+func gently_fade(time_to_take):
+	fade_foreground(null, C.WHITE, time_to_take)
+
+func fade_in(time_to_take, initial_load):
+	if initial_load:
+		fade_foreground(C.BLACK, C.BLACK_TRANSPARENT, time_to_take)
+	else:
+		fade_foreground(C.WHITE, C.WHITE_TRANSPARENT, time_to_take)
 
 func level_won():
 	var all_enemies_gone = (len(get_live_enemies()) == 0)
