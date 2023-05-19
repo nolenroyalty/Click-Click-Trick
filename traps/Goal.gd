@@ -24,8 +24,15 @@ func exited(area):
 	emit_signal("goal_status", false)
 
 func pulse_standard():
-	pulse(U.v(0.9, 0.9))
+	# pulse(U.v(0.9, 0.9))
+	pulse()
 	grid_tween.pulse(U.v(0.9, 0.9))
+
+func tick(beat):
+	match beat:
+		U.BEAT.NOOP: pulse_standard()
+		U.BEAT.SHOW: pulse_standard()
+		U.BEAT.MOVE: pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

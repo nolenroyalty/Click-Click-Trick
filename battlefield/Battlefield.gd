@@ -9,10 +9,12 @@ var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
 var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
 onready var player = $Player
+onready var goal = $Goal
 onready var foreground = $ForegroundHolder/Foreground
 
 var track = TRACKS[0]
 var dead_enemies = {}
+var goal_reached = false
 var won = false
 
 func fade_foreground(start_color, end_color, time_to_take):
@@ -32,7 +34,7 @@ func fade_in(time_to_take, initial_load):
 
 func level_won():
 	var all_enemies_gone = (len(get_live_enemies()) == 0)
-	return all_enemies_gone
+	return goal_reached and all_enemies_gone
 
 func tick(beat):
 	broadcast_tick(beat)
@@ -183,5 +185,9 @@ func get_traps():
 			t.append(trap)
 	return t
 
+func handle_goal_status_update(status):
+	goal_reached = status
+
 func _ready():
 	init_moveables()
+	goal.connect("goal_status", self, "handle_goal_status_update")

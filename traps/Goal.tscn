@@ -11,7 +11,7 @@ extents = Vector2( 11, 11 )
 [node name="Goal" groups=["trap"] instance=ExtResource( 1 )]
 script = ExtResource( 4 )
 
-[node name="Grid" type="Sprite" parent="." index="3"]
+[node name="Sprite" type="Sprite" parent="." index="3"]
 position = Vector2( 16, 16 )
 texture = ExtResource( 3 )
 vframes = 2
@@ -23,7 +23,7 @@ collision_layer = 4
 position = Vector2( 16, 16 )
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="." index="5"]
+[node name="Grid" type="Sprite" parent="." index="5"]
 position = Vector2( 16, 16 )
 texture = ExtResource( 3 )
 vframes = 2

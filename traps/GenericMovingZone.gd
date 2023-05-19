@@ -94,6 +94,7 @@ func _ready():
 	top_color_tween.final_amount = C.BLUE
 	bottom_color_tween.final_amount = C.BLUE
 
-	center.position = U.v(center.position.x, C.CELL_SIZE / 2 + center_position * C.CELL_SIZE)
+	var half_cell = int(C.CELL_SIZE / 2.0)
+	center.position = U.v(center.position.x, half_cell + center_position * C.CELL_SIZE)
 
 	var _ignore = $Center/Area2D.connect("area_entered", self, "entered")
