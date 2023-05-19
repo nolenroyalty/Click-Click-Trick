@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://levels/Sandbox.gd" type="Script" id=1]
+[ext_resource path="res://battlefield/Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://traps/OneWayArrow.tscn" type="PackedScene" id=3]
+[ext_resource path="res://traps/Zone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://traps/HalfBeat.tscn" type="PackedScene" id=5]
+[ext_resource path="res://traps/Teleporter.tscn" type="PackedScene" id=6]
+[ext_resource path="res://traps/Fixed.tscn" type="PackedScene" id=7]
+[ext_resource path="res://enemies/SimpleEnemy.tscn" type="PackedScene" id=8]
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=9]
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Background" parent="." instance=ExtResource( 2 )]
+
+[node name="Zone" parent="." instance=ExtResource( 4 )]
+position = Vector2( 32, 32 )
+
+[node name="BasicEnemy" parent="." instance=ExtResource( 8 )]
+position = Vector2( 192, 192 )
+
+[node name="Teleporter" parent="." instance=ExtResource( 6 )]
+position = Vector2( 32, 192 )
+
+[node name="Teleporter2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 288, 256 )
+
+[node name="Player" parent="." instance=ExtResource( 9 )]
+position = Vector2( 0, 128 )
+
+[node name="OneWayArrow2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 160, 192 )
+
+[node name="OneWayArrow" parent="." instance=ExtResource( 3 )]
+position = Vector2( 224, 224 )
+INITIAL_ROTATION = 180
+
+[node name="Fixed" parent="." instance=ExtResource( 7 )]
+position = Vector2( 224, 288 )
+
+[node name="Fixed2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 224, 256 )
+
+[node name="Fixed3" parent="." instance=ExtResource( 7 )]
+position = Vector2( 256, 192 )
+
+[node name="Fixed4" parent="." instance=ExtResource( 7 )]
+position = Vector2( 288, 192 )
+
+[node name="HalfBeat" parent="." instance=ExtResource( 5 )]
+position = Vector2( 192, 224 )
+
+[node name="ForegroundHolder" type="Node2D" parent="."]
+z_index = 10
+
+[node name="Foreground" type="ColorRect" parent="ForegroundHolder"]
+margin_right = 324.0
+margin_bottom = 324.0
+color = Color( 0.92549, 0.85098, 0.839216, 0 )

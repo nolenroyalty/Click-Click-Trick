@@ -2,26 +2,55 @@ extends Node2D
 
 class_name Battlefield
 
-onready var player = $Player
+signal completed
+signal lost
 
 var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
 var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
 
+onready var player = $Player
 var track = TRACKS[0]
 var dead_enemies = {}
+var won = false
+
+func gently_fade(time_to_take):
+	var t = Tween.new()
+	t.interpolate_property($ForegroundHolder/Foreground, "color", null, C.WHITE, 
+		time_to_take, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	add_child(t)
+	t.start()
+
+func level_won():
+	var all_enemies_gone = (len(get_live_enemies()) == 0)
+	return all_enemies_gone
 
 func tick(beat):
 	broadcast_tick(beat)
+	# Maybe we should clear dead enemies here?
+	clear_dead_enemies()
 
 	match beat:
 		U.BEAT.NOOP:
-			clear_dead_enemies()
+			pass
 		U.BEAT.SHOW: 
 			pass
 		U.BEAT.MOVE:
-			move_player()
-			move_enemies()
-			clear_move_state()
+			if won:
+				pass
+			else:
+				move_player()
+				move_enemies()
+				clear_move_state()
+	
+	if not won and level_won():
+		won = true
+		emit_signal("completed")
+	
+func handle_player_died():
+	if true:
+		print("The player died. Eventually we'll game over here, but that'd be bad for testing.")
+	else:
+		emit_signal("lost")
 
 func broadcast_tick(beat):
 	for enemy in get_enemies():
@@ -53,7 +82,8 @@ func move_enemies():
 	for enemy in get_enemies():
 		move(enemy, enemy.get_moves())
 
-func init_enemies():
+func init_moveables():
+	player.connect("died", self, "handle_player_died")
 	for enemy in get_enemies():
 		enemy.init(player)
 		enemy.connect("died", self, "handle_enemy_died", [enemy])
@@ -128,6 +158,13 @@ func get_enemies():
 			e.append(enemy)
 	return e
 
+func get_live_enemies():
+	var e = []
+	for enemy in get_enemies():
+		if not enemy.dead:
+			e.append(enemy)
+	return e
+
 func get_traps():
 	var t = []
 	for trap in get_children():
@@ -136,4 +173,4 @@ func get_traps():
 	return t
 
 func _ready():
-	init_enemies()
+	init_moveables()

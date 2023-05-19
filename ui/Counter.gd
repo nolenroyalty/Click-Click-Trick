@@ -7,6 +7,8 @@ onready var label_tween = $LabelTween
 
 var beat = 0
 var beat_count_max = 0
+var stop_in_this_many_beats = null
+var skip_ticks_until_we_hear_otherwise = false
 
 func reset_and_count_down_color_rect():
 	var total_amount_of_time = U.beat_time
@@ -23,6 +25,8 @@ func init(bcm):
 	self.beat = bcm
 	beat_count_label.text = "1"
 	color_rect.rect_scale.x = 1.0
+	stop_in_this_many_beats = null
+	skip_ticks_until_we_hear_otherwise = false
 
 func spin_label(new_beat):
 	var time = U.beat_time / 2.0
@@ -34,6 +38,17 @@ func spin_label(new_beat):
 	beat_count_label.text = new_beat
 
 func tick(_beat):
+	if stop_in_this_many_beats != null and stop_in_this_many_beats > 0:
+		stop_in_this_many_beats -= 1
+
+	if stop_in_this_many_beats == 0 and not skip_ticks_until_we_hear_otherwise:
+		reset_and_count_down_color_rect()
+		spin_label("!")
+		skip_ticks_until_we_hear_otherwise = true
+	
+	if skip_ticks_until_we_hear_otherwise:
+		return
+
 	beat = beat % beat_count_max
 	reset_and_count_down_color_rect()
 	spin_label("%s" % (beat + 1))

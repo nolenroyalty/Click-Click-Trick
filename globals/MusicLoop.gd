@@ -7,6 +7,15 @@ enum S { PLAYING, STOPPED }
 
 var state = S.STOPPED
 
+func gently_fade(time):
+	var t = Tween.new()
+	t.interpolate_property(self, "volume_db", null, -35, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	add_child(t)
+	t.start()
+	yield(t, "tween_completed")
+	state = S.STOPPED
+	playing = false
+	
 func track(t):
 	match t:
 		TRACKS.START_60BPM: return start_60bpm
@@ -16,6 +25,7 @@ func track(t):
 
 func begin_playing(track_):
 	seek(0)
+	volume_db = 0
 	stream = track(track_)
 	playing = true
 

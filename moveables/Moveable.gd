@@ -118,7 +118,6 @@ func pulse():
 		square.pulse()
 
 func emit_died():
-	print("I died! %s" % [ self ])
 	dead = true
 	emit_signal("died")
 
