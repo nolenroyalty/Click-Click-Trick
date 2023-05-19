@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://traps/GenericTrap.tscn" type="PackedScene" id=1]
+[ext_resource path="res://traps/sprites/SingleZone.png" type="Texture" id=2]
+[ext_resource path="res://traps/SingleZone.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 11, 11 )
+
+[node name="SingleZone" groups=["trap"] instance=ExtResource( 1 )]
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="." index="3"]
+position = Vector2( 16, 16 )
+texture = ExtResource( 2 )
+vframes = 2
+frame = 1
+
+[node name="Grid" type="Sprite" parent="." index="4"]
+visible = false
+position = Vector2( 16, 16 )
+texture = ExtResource( 2 )
+vframes = 2
+
+[node name="Area2D" type="Area2D" parent="." index="5"]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2( 16, 16 )
+shape = SubResource( 1 )

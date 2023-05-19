@@ -2,7 +2,7 @@
 
 [ext_resource path="res://effects/PulseTween.tscn" type="PackedScene" id=1]
 [ext_resource path="res://traps/Fixed.gd" type="Script" id=2]
-[ext_resource path="res://traps/sprites/arrow.png" type="Texture" id=3]
+[ext_resource path="res://traps/sprites/FixedBlock.png" type="Texture" id=3]
 
 [node name="Fixed" type="Node2D" groups=["trap"]]
 script = ExtResource( 2 )
@@ -14,8 +14,5 @@ script = ExtResource( 2 )
 [node name="AudioFail" type="AudioStreamPlayer" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.188235, 0.25098, 0.54902, 1 )
 position = Vector2( 16, 16 )
 texture = ExtResource( 3 )
-hframes = 2
-frame = 1

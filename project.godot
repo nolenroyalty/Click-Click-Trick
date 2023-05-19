@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battlefield/Battlefield.gd"
 }, {
+"base": "GenericTrap",
+"class": "GenericMovingZone",
+"language": "GDScript",
+"path": "res://traps/GenericMovingZone.gd"
+}, {
 "base": "Node2D",
 "class": "GenericTrap",
 "language": "GDScript",
@@ -31,6 +36,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Battlefield": "",
+"GenericMovingZone": "",
 "GenericTrap": "",
 "Moveable": "",
 "Player": ""

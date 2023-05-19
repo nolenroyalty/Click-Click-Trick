@@ -1,11 +1,14 @@
 extends Node2D
 
+# We add a 2 pixel wide white border and 8 pixels of black space around the battlefield
+const TOTAL_BORDER_SIZE = 20
+
 onready var outline = $BattlefieldOutline
 onready var counter = $Counter
 onready var beat_timer = $BeatTimer
 
 enum S { LOADING, WAIT, TICKING, COMPLETED }
-const LEVEL_POSITION = Vector2(39, 76)
+var LEVEL_POSITION
 
 var track
 var beat_count
@@ -22,8 +25,9 @@ var LEVELS = [
 func handle_level_completed(index):
 	print("Level %s completed" % [index])
 
-	var time_to_take = U.beat_time * len(_beats())
-	level.gently_fade(time_to_take)
+	var number_of_beats = len(_beats())
+	var time_to_take = U.beat_time * number_of_beats
+	level.gently_fade(time_to_take * ((float(number_of_beats) - 1) / float(number_of_beats)))
 	MusicLoop.gently_fade(time_to_take)
 	counter.stop_in_this_many_beats = len(_beats())
 	yield(get_tree().create_timer(time_to_take), "timeout")
@@ -92,6 +96,7 @@ func _process(_delta):
 		start_ticking()
 
 func _ready():
+	LEVEL_POSITION = $BattlefieldOutline.position + (U.v(TOTAL_BORDER_SIZE, TOTAL_BORDER_SIZE) / 2)
 	VisualServer.set_default_clear_color(Color("#1b1b17"))
 	beat_timer.connect("timeout", self, "execute_tick")
 	load_level(level_index)

@@ -7,7 +7,7 @@ const NUMBER_OF_MOVES_WE_CAN_TAKE = 3
 onready var audio = $AudioStreamPlayer2D
 var move_fail_sound = preload("res://sounds/unable-to-perform.wav")
 
-enum S { RECORDING, MOVING }
+enum S { RECORDING, MOVING, FINISHED }
 var state = S.RECORDING
 
 func this_would_put_us_out_of_bounds(moves_):
@@ -82,6 +82,8 @@ func _process(_delta):
 				add_move(move)
 				orient_for_first_move()
 				display_pathing()
+		S.FINISHED:
+			pass
 
 func _ready():
 	health = 2

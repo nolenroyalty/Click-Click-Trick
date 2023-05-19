@@ -4,35 +4,23 @@ extends GenericTrap
 # and much easier to reason about. It'd still be cool to add some kind of timing element to the game though.
 
 onready var grid_tween = $GridTween
-onready var half_beat_tween = $HalfBeatTween
-
-const BLUE_TRANSPARENT = Color("#9630408c")
-const RED_TRANSPARENT = Color("#968e3a47")
+onready var grid_color_tween = $GridColorTween
+onready var center_color_tween = $CenterColorTween
 
 var penalized = {}
 var tracking = {}
 var firing = false
 
 func pulse(_amount=null):
-	.pulse(U.v(1.2, 1.2))
-	grid_tween.pulse()
-
-func tween_half(property, start, end, duration, delay):
-	half_beat_tween.interpolate_property($Center, property, start, end, duration, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, delay)
+	.pulse(U.v(1.25, 1.25))
+	grid_tween.pulse(U.v(0.9, 0.9))
 
 func pulse_center_red():
-	var half_beat = U.beat_time / 2
-	var full = U.v(1, 1)
-	var double = U.v(2, 2)
-	firing = true
-	tween_half("scale", full, double, half_beat, 0)
-	tween_half("modulate", BLUE_TRANSPARENT, RED_TRANSPARENT, half_beat, 0)
-	tween_half("scale", double, full, half_beat, half_beat)
-	tween_half("modulate", RED_TRANSPARENT, BLUE_TRANSPARENT, half_beat, half_beat)
-	half_beat_tween.start()
-	yield(half_beat_tween, "tween_all_completed")
-	firing = false
-
+	grid_tween.pulse(U.v(1.25, 1.25))
+	.pulse(U.v(1.25, 1.25))
+	grid_color_tween.pulse(C.RED)
+	center_color_tween.pulse(C.RED)
+	
 func clear_penalties():
 	penalized = {}
 
@@ -60,14 +48,27 @@ func tick(beat):
 	match beat:
 		U.BEAT.NOOP:
 			clear_penalties()
+			firing = true
 			pulse_center_red()
-		U.BEAT.SHOW: pulse()
+		U.BEAT.SHOW:
+			firing = false
+			pulse()
 		U.BEAT.MOVE:
+			firing = false
 			pulse()
 
 func _ready():
 	pulse_tween.target = $Center
 	grid_tween.target = $Grid
+	
+	grid_color_tween.target = $Grid
+	grid_color_tween.property = "modulate"
+	grid_color_tween.final_amount = C.BLUE
+
+	center_color_tween.target = $Center
+	center_color_tween.property = "modulate"
+	center_color_tween.final_amount = C.BLUE
+
 	var _ignore = $Area2D.connect("area_entered", self, "entered")
 	_ignore = $Area2D.connect("area_exited", self, "exited")
 

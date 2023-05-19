@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://traps/sprites/HalfBeat.png" type="Texture" id=1]
 [ext_resource path="res://traps/HalfBeat.gd" type="Script" id=2]
 [ext_resource path="res://effects/PulseTween.tscn" type="PackedScene" id=3]
+[ext_resource path="res://traps/sprites/HalfBeatWIthDoor.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 11, 11 )
@@ -13,15 +13,15 @@ script = ExtResource( 2 )
 [node name="Grid" type="Sprite" parent="."]
 modulate = Color( 0.188235, 0.25098, 0.54902, 1 )
 position = Vector2( 16, 16 )
-texture = ExtResource( 1 )
-vframes = 2
-
-[node name="Center" type="Sprite" parent="."]
-modulate = Color( 0.188235, 0.25098, 0.54902, 0.588235 )
-position = Vector2( 16, 16 )
-texture = ExtResource( 1 )
+texture = ExtResource( 4 )
 vframes = 2
 frame = 1
+
+[node name="Center" type="Sprite" parent="."]
+modulate = Color( 0.188235, 0.25098, 0.54902, 1 )
+position = Vector2( 16, 16 )
+texture = ExtResource( 4 )
+vframes = 2
 
 [node name="AudioSuccess" type="AudioStreamPlayer" parent="."]
 
@@ -31,7 +31,9 @@ frame = 1
 
 [node name="GridTween" parent="." instance=ExtResource( 3 )]
 
-[node name="HalfBeatTween" type="Tween" parent="."]
+[node name="CenterColorTween" parent="." instance=ExtResource( 3 )]
+
+[node name="GridColorTween" parent="." instance=ExtResource( 3 )]
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4

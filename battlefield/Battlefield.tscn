@@ -16,15 +16,18 @@ __meta__ = {
 }
 
 [node name="ForegroundHolder" type="Node2D" parent="."]
+position = Vector2( -2, -2 )
 z_index = 10
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Foreground" type="ColorRect" parent="ForegroundHolder"]
-margin_right = 324.0
-margin_bottom = 324.0
-color = Color( 0.105882, 0.105882, 0.0901961, 0 )
+margin_left = -6.0
+margin_top = -6.0
+margin_right = 330.0
+margin_bottom = 330.0
+color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_lock_": true
 }

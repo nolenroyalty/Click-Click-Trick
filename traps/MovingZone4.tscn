@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://traps/GenericMovingZone.tscn" type="PackedScene" id=1]
+
+[node name="MovingZone4" instance=ExtResource( 1 )]
+distance = 3
+
+[node name="Bottom" parent="." index="5"]
+position = Vector2( 16, 112 )

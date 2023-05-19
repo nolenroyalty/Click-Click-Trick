@@ -3,14 +3,14 @@ extends GenericTrap
 # We could revisit this later and have these rotate in other directions
 
 export(int, 0, 180) var INITIAL_ROTATION = 0
+onready var flip_tween = $FlipTween
+onready var grid_tween = $GridTween
+onready var sprite = $Sprite
+
 var current_rotation
 var direction
-
 var penalized = {}
 var tracking = {}
-
-onready var tween = $Tween
-onready var sprite = $Sprite
 var skip_first_flip = true
 
 func set_direction_for_rotation():
@@ -37,10 +37,10 @@ func flip():
 	var time = U.beat_time / 2
 	var biggest = U.v(1, 1)
 	var smallest = U.v(0.25, 0.25)
-	tween.interpolate_property(sprite, "rotation_degrees", current_rotation, desired_rotation, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	tween.interpolate_property(sprite, "scale", null, smallest, time / 2, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	tween.interpolate_property(sprite, "scale", smallest, biggest, time / 2, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time / 2.0)
-	tween.start()
+	flip_tween.interpolate_property(sprite, "rotation_degrees", current_rotation, desired_rotation, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	flip_tween.interpolate_property(sprite, "scale", null, smallest, time / 2, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	flip_tween.interpolate_property(sprite, "scale", smallest, biggest, time / 2, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time / 2.0)
+	flip_tween.start()
 	
 	current_rotation = desired_rotation
 	set_direction_for_rotation()
@@ -62,9 +62,9 @@ func stop_tracking(area):
 
 func pulse_red():
 	var time = U.beat_time / 3
-	tween.interpolate_property(self, "modulate", C.BLUE, C.RED, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	tween.interpolate_property(self, "modulate", C.RED, C.BLUE, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time)
-	tween.start()
+	flip_tween.interpolate_property(self, "modulate", C.BLUE, C.RED, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	flip_tween.interpolate_property(self, "modulate", C.RED, C.BLUE, time, Tween.TRANS_QUAD, Tween.EASE_IN_OUT, time)
+	flip_tween.start()
 
 func on_fail():
 	play_fail()
@@ -95,6 +95,7 @@ func _ready():
 	sprite.rotation_degrees = INITIAL_ROTATION
 	current_rotation = INITIAL_ROTATION
 	set_direction_for_rotation()
+	grid_tween.target = $Grid
 	var _ignore = $Area2D.connect("area_entered", self, "begin_tracking")
 	_ignore = $Area2D.connect("area_exited", self, "stop_tracking")
 
@@ -106,6 +107,8 @@ func tick(beat):
 		U.BEAT.NOOP:
 			flip()
 		U.BEAT.SHOW:
+			grid_tween.pulse(U.v(0.9, 0.9))
 			pulse()
 		U.BEAT.MOVE:
+			grid_tween.pulse(U.v(0.9, 0.9))
 			clear_penalties()

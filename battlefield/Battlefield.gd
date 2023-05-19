@@ -22,7 +22,7 @@ func fade_foreground(start_color, end_color, time_to_take):
 	t.start()
 
 func gently_fade(time_to_take):
-	fade_foreground(null, C.WHITE, time_to_take)
+	fade_foreground(C.WHITE_TRANSPARENT, C.WHITE, time_to_take)
 
 func fade_in(time_to_take, initial_load):
 	if initial_load:
@@ -54,6 +54,7 @@ func tick(beat):
 	
 	if not won and level_won():
 		won = true
+		player.state = player.S.FINISHED
 		emit_signal("completed")
 	
 func handle_player_died():
@@ -128,8 +129,8 @@ func move(node, moves):
 
 		var new_pos = pos + U.d(move)
 		var clamped = new_pos
-		clamped.x = clamp(new_pos.x, 0, U.WIDTH - 1)
-		clamped.y = clamp(new_pos.y, 0, U.HEIGHT - 1)
+		clamped.x = clamp(new_pos.x, 0, C.WIDTH - 1)
+		clamped.y = clamp(new_pos.y, 0, C.HEIGHT - 1)
 
 		if U.is_blocked(clamped):
 			continue
