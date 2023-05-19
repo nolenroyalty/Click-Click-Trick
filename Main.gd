@@ -7,6 +7,7 @@ onready var outline = $BattlefieldOutline
 onready var counter = $Counter
 onready var beat_timer = $BeatTimer
 onready var reset_button = $ResetButton
+onready var directive = $Directive
 
 enum S { LOADING, WAIT, TICKING, COMPLETED }
 var LEVEL_POSITION
@@ -67,6 +68,8 @@ func handle_level_reset():
 	match state:
 		S.WAIT, S.LOADING, S.COMPLETED: return
 		S.TICKING: pass
+	
+	state = S.LOADING
 
 	print("Level %s reset" % [level_index])
 	gently_fade(2)
@@ -101,6 +104,7 @@ func load_level(index, is_reset):
 	U.set_bpm(_bpm())
 	level.connect("completed", self, "handle_level_completed", [index])
 	state = S.WAIT
+	directive.set_text("space to start")
 	# reset counter? <- WHAT does that comment mean
 
 func execute_tick():
@@ -114,8 +118,10 @@ func execute_tick():
 	counter.tick(beat)	
 	outline.tick(beat)
 	reset_button.tick(beat)
+	directive.tick(beat)
 
 func start_ticking():
+	directive.set_text("")
 	state = S.TICKING
 	beat_timer.wait_time = U.beat_time
 	counter.init(len(_beats()))
