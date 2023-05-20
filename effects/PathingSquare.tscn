@@ -3,5 +3,5 @@
 [ext_resource path="res://effects/PathingSquare.gd" type="Script" id=1]
 
 [node name="PathingSquare" type="Node2D"]
-z_index = 1
+z_index = 3
 script = ExtResource( 1 )
