@@ -144,4 +144,4 @@ func player_entered_hurtbox(area):
 	audio.play()
 
 func _ready():
-	$Hurtbox.connect("area_entered", self, "player_entered_hurtbox")
+	var _ignore = $Hurtbox.connect("area_entered", self, "player_entered_hurtbox")

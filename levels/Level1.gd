@@ -45,7 +45,7 @@ func display_tutorial_text():
 		STAGE.HIT_SPACE:
 			display_directive("up up space")
 		STAGE.REACH_GOAL:
-			display_directive("reach the goal")
+			display_directive("reach goal")
 	
 func tick(beat):
 	.tick(beat)

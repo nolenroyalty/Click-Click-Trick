@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 3
+var level_index = 2
 var level
 var initial_load = true
   
@@ -61,7 +61,8 @@ func handle_level_completed(index):
 	level_index += 1
 	if level_index >= len(LEVELS):
 		print("WON THE GAME!!!")
-		# Do Something Here
+		# Do something better here?
+		directive.set_text("! you win !")
 		return
 
 	load_level(level_index, false)
