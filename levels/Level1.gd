@@ -37,13 +37,13 @@ func level_won():
 func display_tutorial_text():
 	match stage:
 		STAGE.MOVE_ONCE:
-			display_directive("up")
+			display_directive("move: down")
 		STAGE.MOVE_THRICE_DIFFERENT_DIRECTIONS:
-			display_directive("down right down")
+			display_directive("move more: right right up")
 		STAGE.CANCEL_MOVE:
-			display_directive("up down")
+			display_directive("cancel move: down up")
 		STAGE.HIT_SPACE:
-			display_directive("up up space")
+			display_directive("cancel all: down down space")
 		STAGE.REACH_GOAL:
 			display_directive("reach goal")
 	
@@ -57,9 +57,9 @@ func tick(beat):
 func has_desired_moves(moves):
 	match stage:
 		STAGE.MOVE_ONCE:
-			return U.D.UP in moves
+			return U.D.DOWN in moves
 		STAGE.MOVE_THRICE_DIFFERENT_DIRECTIONS:
-			return [U.D.DOWN, U.D.RIGHT, U.D.DOWN] == moves
+			return [U.D.RIGHT, U.D.RIGHT, U.D.UP] == moves
 	
 	return null
 
