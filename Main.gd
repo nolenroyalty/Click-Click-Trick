@@ -36,8 +36,8 @@ var LEVELS = [
 ]
 
 # var TEST_LEVEL = null
-# var TEST_LEVEL = preload("res://levels/ArrowPortHard.tscn")
-var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
+var TEST_LEVEL = preload("res://levels/HalfBeatOnPort.tscn")
+#var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
 
 func gently_fade(number_of_beats):
 	var time_to_take = U.beat_time * number_of_beats

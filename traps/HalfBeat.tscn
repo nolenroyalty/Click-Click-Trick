@@ -8,6 +8,7 @@
 extents = Vector2( 11, 11 )
 
 [node name="HalfBeat" type="Node2D" groups=["trap"]]
+z_index = 1
 script = ExtResource( 2 )
 
 [node name="Grid" type="Sprite" parent="."]

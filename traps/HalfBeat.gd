@@ -16,8 +16,14 @@ func pulse(_amount=null):
 	grid_tween.pulse(U.v(0.9, 0.9))
 
 func pulse_center_red():
+	var scale
+	if len(tracking) - len(penalized) > 0:
+		scale = U.v(2, 2)
+	else:
+		scale = U.v(1.25, 1.25)
+
 	grid_tween.pulse(U.v(1.25, 1.25))
-	.pulse(U.v(1.25, 1.25))
+	.pulse(scale)
 	grid_color_tween.pulse(C.RED)
 	center_color_tween.pulse(C.RED)
 	
