@@ -21,9 +21,8 @@ func track(t):
 			return null
 
 func begin_playing(track_):
-	fade_tween.stop_all()
+	print('begin playing track %s' % track_)
 	seek(0)
-	volume_db = 0
 	stream = track(track_)
 	playing = true
 
@@ -34,6 +33,8 @@ func maybe_play_again(track_):
 			
 func start(track_):
 	state = S.PLAYING
+	fade_tween.stop_all()
+	volume_db = 0
 	begin_playing(track_)
 	var _ignore = self.connect("finished", self, "maybe_play_again", [track_])
 

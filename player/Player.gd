@@ -32,6 +32,7 @@ func this_move_cancels_the_last_one(move):
 
 func play_bonk():
 	audio.stream = move_fail_sound
+	audio.volume_db = -10.0
 	audio.play()
 
 func add_move(move):
