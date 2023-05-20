@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 5
+var level_index = 2
 var level
 var initial_load = true
   
@@ -35,8 +35,8 @@ var LEVELS = [
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
-# var TEST_LEVEL = null
-var TEST_LEVEL = preload("res://levels/HalfBeatOnPort.tscn")
+var TEST_LEVEL = null
+# var TEST_LEVEL = preload("res://levels/HalfBeatOnPort.tscn")
 #var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
 
 func gently_fade(number_of_beats):

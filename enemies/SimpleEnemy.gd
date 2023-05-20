@@ -4,6 +4,7 @@ var player : Node2D
 var direction = U.D.NONE
 var number_of_moves = 2
 onready var audio = $AudioStreamPlayer
+onready var color_tween = $ColorTween
 var sound_fail = preload("res://sounds/fail-2.wav")
 
 func init(player_):
@@ -139,9 +140,13 @@ func player_entered_hurtbox(area):
 	player.damage()
 
 	pulse(U.v(2.0, 2.0))
+	color_tween.pulse(C.RED)
 
 	audio.stream = sound_fail
 	audio.play()
 
 func _ready():
 	var _ignore = $Hurtbox.connect("area_entered", self, "player_entered_hurtbox")
+	color_tween.target = $Sprite
+	color_tween.property = "modulate"
+	color_tween.final_amount = C.GRAY

@@ -21,6 +21,7 @@ frame = 1
 [node name="Center" type="Sprite" parent="."]
 modulate = Color( 0.188235, 0.25098, 0.54902, 1 )
 position = Vector2( 16, 16 )
+z_index = 2
 texture = ExtResource( 4 )
 vframes = 2
 
