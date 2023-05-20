@@ -27,11 +27,14 @@ var LEVELS = [
 	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"),
 	preload("res://levels/LevelTeleportEnemyOut.tscn"), # 5
 	preload("res://levels/LevelIntroduceArrow.tscn"),
+	preload("res://levels/LevelPortToArrow.tscn"),
 	preload("res://levels/LevelIntroduceMovingZone.tscn"),
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
-var TEST_LEVEL = preload("res://levels/LevelCarefulArrows.tscn")
+var TEST_LEVEL = null
+# var TEST_LEVEL = preload("res://levels/LevelPortToArrow.tscn")
+#var TEST_LEVEL = preload("res://levels/LevelIntroduceArrow.tscn")
 
 func gently_fade(number_of_beats):
 	var time_to_take = U.beat_time * number_of_beats

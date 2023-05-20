@@ -45,20 +45,27 @@ func flip():
 	current_rotation = desired_rotation
 	set_direction_for_rotation()
 
-func begin_tracking(area):
+func handle_entered(area):
 	var moveable = moveable_of_area(area)
 	if moveable == null:
 		return
-	if moveable in penalized:
-		return
-	tracking[moveable] = true
+	
+	if moveable.direction_right_this_second != direction and moveable.direction_right_this_second != U.D.NONE:
+		if success_or_fail(moveable):
+			# penalized[moveable] = true
+			moveable.damage()
 
-func stop_tracking(area):
-	var moveable = moveable_of_area(area)
-	if moveable == null:
-		return
-	if not tracking.erase(moveable):
-		print("Potential bug: stopped tracking %s but we weren't tracking it! - %s" % [moveable, self])
+	# if moveable in penalized:
+	# 	return
+	# tracking[moveable] = true
+
+# This was from when we also penalized for moving _out_ of the arrow
+# func stop_tracking(area):
+# 	var moveable = moveable_of_area(area)
+# 	if moveable == null:
+# 		return
+# 	if not tracking.erase(moveable):
+# 		print("Potential bug: stopped tracking %s but we weren't tracking it! - %s" % [moveable, self])
 
 func pulse_red():
 	var time = U.beat_time / 3
@@ -96,12 +103,13 @@ func _ready():
 	current_rotation = INITIAL_ROTATION
 	set_direction_for_rotation()
 	grid_tween.target = $Grid
-	var _ignore = $Area2D.connect("area_entered", self, "begin_tracking")
-	_ignore = $Area2D.connect("area_exited", self, "stop_tracking")
+	var _ignore = $Area2D.connect("area_entered", self, "handle_entered")
+	# _ignore = $Area2D.connect("area_exited", self, "stop_tracking")
 	U.is_single_trap(self)
 
-func _process(_delta):
-	penalize_wrong_directions()
+# func _process(_delta):
+# 	if penalizing:
+# 		penalize_wrong_directions()
 
 func tick(beat):
 	match beat:
