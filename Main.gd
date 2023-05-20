@@ -30,14 +30,16 @@ var LEVELS = [
 	preload("res://levels/LevelPortToArrow.tscn"),
 	preload("res://levels/ArrowPortHard.tscn"),
 	preload("res://levels/LevelIntroduceHalfBeat.tscn"),
+	preload("res://levels/IntroTeleportOntoHalfBeat.tscn"), # 10
+	preload("res://levels/HalfBeatReallyHard.tscn"),
 	# 10
 	# preload("res://levels/LevelIntroduceMovingZone.tscn"),
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
 var TEST_LEVEL = null
-# var TEST_LEVEL = preload("res://levels/HalfBeatOnPort.tscn")
-#var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
+# var TEST_LEVEL = preload("res://levels/IntroTeleportOntoHalfBeat.tscn")
+# var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
 
 func gently_fade(number_of_beats):
 	var time_to_take = U.beat_time * number_of_beats
@@ -87,7 +89,7 @@ func handle_level_reset():
 func handle_level_lost():
 	match state:
 		S.WAIT, S.LOADING, S.START_COMPLETED, S.COMPLETED:
-			print("BUG: We're not ticking but the game was lost?")
+			print("Potential bug: We're not ticking but the game was lost?")
 		S.TICKING: pass
 	
 	state = S.LOADING
