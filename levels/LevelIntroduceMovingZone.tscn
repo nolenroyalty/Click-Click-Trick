@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://traps/MovingZone4.tscn" type="PackedScene" id=1]
+[ext_resource path="res://battlefield/Battlefield.tscn" type="PackedScene" id=2]
+[ext_resource path="res://traps/Fixed.tscn" type="PackedScene" id=3]
+
+[node name="Battlefield" instance=ExtResource( 2 )]
+
+[node name="Player" parent="." index="0"]
+position = Vector2( 128, 96 )
+
+[node name="Goal" parent="." index="3"]
+position = Vector2( 288, 96 )
+
+[node name="MovingZone4" parent="." index="4" instance=ExtResource( 1 )]
+position = Vector2( 256, 64 )
+center_position = 3
+moving_down = false
+
+[node name="Fixed" parent="." index="5" instance=ExtResource( 3 )]
+position = Vector2( 288, 192 )
+
+[node name="Fixed2" parent="." index="6" instance=ExtResource( 3 )]
+position = Vector2( 288, 32 )

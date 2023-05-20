@@ -196,6 +196,7 @@ class AStarPreferTeleporters:
 		# var to_pos = U.pathing_id_to_pos(to)
 
 		if U.should_try_to_path_through(from_pos):
+			# TODO Separate out traps vs teleporters
 			return 0.75
 		else:
 			return 1.0

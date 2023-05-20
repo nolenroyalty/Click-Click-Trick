@@ -9,13 +9,13 @@ onready var beat_timer = $BeatTimer
 onready var reset_button = $ResetButton
 onready var directive = $Directive
 
-enum S { LOADING, WAIT, TICKING, COMPLETED }
+enum S { LOADING, WAIT, TICKING, START_COMPLETED, COMPLETED }
 var LEVEL_POSITION
 
 var track
 var beat_count
 var state
-var level_index = 5
+var level_index = 1
 var level
 var initial_load = true
   
@@ -26,6 +26,7 @@ var LEVELS = [
 	preload("res://levels/LevelIntroduceTeleporter.tscn"),
 	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"),
 	preload("res://levels/LevelTeleportEnemyOut.tscn"), # 5
+	preload("res://levels/LevelIntroduceMovingZone.tscn"),
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
@@ -46,6 +47,7 @@ func stop_music_and_free_level():
 
 func handle_level_completed(index):
 	print("Level %s completed" % [index])
+	state = S.START_COMPLETED
 
 	# var number_of_beats = len(_beats())
 	# var time_to_take = U.beat_time * number_of_beats
@@ -66,7 +68,7 @@ func handle_level_completed(index):
 
 func handle_level_reset():
 	match state:
-		S.WAIT, S.LOADING, S.COMPLETED: return
+		S.WAIT, S.LOADING, S.START_COMPLETED, S.COMPLETED: return
 		S.TICKING: pass
 	
 	state = S.LOADING
@@ -110,7 +112,7 @@ func load_level(index, is_reset):
 func execute_tick():
 	match state:
 		S.WAIT, S.LOADING, S.COMPLETED: return
-		S.TICKING: pass
+		S.TICKING, S.START_COMPLETED: pass
 	
 	var beat = get_beat()
 	incr_beat()
@@ -121,7 +123,7 @@ func execute_tick():
 	directive.tick(beat)
 
 func start_ticking():
-	directive.set_text("")
+	directive.set_text(null)
 	state = S.TICKING
 	beat_timer.wait_time = U.beat_time
 	counter.init(len(_beats()))
