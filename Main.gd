@@ -48,12 +48,6 @@ func stop_music_and_free_level():
 func handle_level_completed(index):
 	print("Level %s completed" % [index])
 	state = S.START_COMPLETED
-
-	# var number_of_beats = len(_beats())
-	# var time_to_take = U.beat_time * number_of_beats
-	# level.gently_fade(time_to_take * ((float(number_of_beats) - 1) / float(number_of_beats)))
-	# MusicLoop.gently_fade(time_to_take)
-	# counter.stop_in_this_many_beats = len(_beats())
 	gently_fade(len(_beats()))
 	yield(get_tree().create_timer(U.beat_time * len(_beats())), "timeout")
 	stop_music_and_free_level()
