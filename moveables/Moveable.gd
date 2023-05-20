@@ -112,8 +112,8 @@ func clear_teleportation_state():
 func get_moves():
 	return moves
 
-func pulse():
-	pulse_tween.pulse(U.v(1.2, 1.2))
+func pulse(amount=U.v(1.2, 1.2)):
+	pulse_tween.pulse(amount)
 	for square in current_pathing_squares:
 		square.pulse()
 

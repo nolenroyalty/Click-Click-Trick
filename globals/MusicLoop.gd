@@ -30,9 +30,8 @@ func begin_playing(track_):
 func maybe_play_again(track_):
 	match state:
 		S.PLAYING: begin_playing(track_)
-		S.STOPPED:
-			self.disconnect("finished", self, "maybe_play_again")
-
+		S.STOPPED: pass
+			
 func start(track_):
 	state = S.PLAYING
 	begin_playing(track_)
@@ -41,3 +40,4 @@ func start(track_):
 func stop():
 	playing = false
 	state = S.STOPPED
+	self.disconnect("finished", self, "maybe_play_again")

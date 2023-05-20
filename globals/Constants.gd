@@ -13,3 +13,5 @@ const WHITE_TRANSPARENT = Color("#00ecd9d6")
 const BLACK_TRANSPARENT = Color("#001b1b17")
 const BLUE_TRANSPARENT = Color("#0030408c")
 const RED_TRANSPARENT = Color("#008e3a47")
+
+const ALLOW_DEATH = true

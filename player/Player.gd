@@ -36,8 +36,10 @@ func add_move(move):
 				# But I think it's easier to disallow it for now.
 				moves.pop_back()
 				return
+			elif len(moves) >= NUMBER_OF_MOVES_WE_CAN_TAKE:
+				play_bonk()
 			else:
-				if moves == [ U.D.NONE ] or moves == [] or len(moves) >= NUMBER_OF_MOVES_WE_CAN_TAKE:
+				if moves == [ U.D.NONE ] or moves == []:
 					proposed_moves = [ new_move ]
 				else:
 					proposed_moves = moves + [ new_move ]
@@ -87,5 +89,4 @@ func _process(_delta):
 			pass
 
 func _ready():
-	health = 2
 	is_player = true

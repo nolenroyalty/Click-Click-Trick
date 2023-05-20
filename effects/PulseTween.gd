@@ -6,7 +6,7 @@ var property = "scale"
 var final_amount = U.v(1, 1)
 
 func interp(time, start, end):
-	var _ignore = interpolate_property(target, property, start, end, time, TRANS_QUAD, EASE_OUT)
+	var _ignore = interpolate_property(target, property, start, end, time, TRANS_CUBIC, EASE_OUT)
 
 func pulse(amount = U.v(1.1, 1.1)):
 	# I don't quite understand why, but this doesn't look right if we divide time by 2.0 as you'd expect.

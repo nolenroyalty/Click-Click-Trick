@@ -60,10 +60,10 @@ func tick(beat):
 		emit_signal("completed")
 	
 func handle_player_died():
-	if true:
-		print("The player died. Eventually we'll game over here, but that'd be bad for testing.")
-	else:
+	if C.ALLOW_DEATH:
 		emit_signal("lost")
+	else:
+		print("The player died. Eventually we'll game over here, but that'd be bad for testing.")
 
 func broadcast_tick(beat):
 	for enemy in get_enemies():

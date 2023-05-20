@@ -3,6 +3,8 @@ extends Moveable
 var player : Node2D
 var direction = U.D.NONE
 var number_of_moves = 2
+onready var audio = $AudioStreamPlayer
+var sound_fail = preload("res://sounds/fail-2.wav")
 
 func init(player_):
 	player = player_
@@ -127,3 +129,20 @@ func tick(beat):
 			pulse()
 		U.BEAT.MOVE:
 			pass
+
+func player_entered_hurtbox(area):
+	var p = area.get_parent()
+	if not (p is Player):
+		print("BUG: non-player entered hurtbox of %s" % [self])
+		return
+
+	player.damage()
+
+	pulse(U.v(2.0, 2.0))
+
+	audio.stream = sound_fail
+	audio.play()
+
+func _ready():
+	._ready()
+	$Hurtbox.connect("area_entered", self, "player_entered_hurtbox")

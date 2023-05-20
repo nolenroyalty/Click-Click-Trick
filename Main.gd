@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 1
+var level_index = 2
 var level
 var initial_load = true
   
@@ -80,10 +80,24 @@ func handle_level_reset():
 	stop_music_and_free_level()
 	load_level(level_index, true)
 
+func handle_level_lost():
+	match state:
+		S.WAIT, S.LOADING, S.START_COMPLETED, S.COMPLETED:
+			print("BUG: We're not ticking but the game was lost?")
+		S.TICKING: pass
+	
+	state = S.LOADING
+	print("Level lost, resetting")
+	yield(get_tree().create_timer(U.beat_time), "timeout")
+	gently_fade(3)
+	yield(get_tree().create_timer(U.beat_time * 2), "timeout")
 
+	stop_music_and_free_level()
+	load_level(level_index, true)
+	
 func load_level(index, is_reset):
 	state = S.LOADING
-	stop_music()
+	# stop_music()
 
 	if level != null:
 		level.call_deferred("queue_free")
@@ -105,8 +119,9 @@ func load_level(index, is_reset):
 	
 	U.set_bpm(_bpm())
 	level.connect("completed", self, "handle_level_completed", [index])
+	level.connect("lost", self, "handle_level_lost")
 	state = S.WAIT
-	directive.set_text("space to start")
+	directive.set_text("space")
 	# reset counter? <- WHAT does that comment mean
 
 func execute_tick():
