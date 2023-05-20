@@ -72,5 +72,7 @@ func _ready():
 	var _ignore = $Area2D.connect("area_entered", self, "entered")
 	_ignore = $Area2D.connect("area_exited", self, "exited")
 
+	U.add_single_trap(self)
+
 func _process(_delta):
 	if firing: penalize_if_present()

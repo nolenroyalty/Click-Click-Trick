@@ -20,6 +20,7 @@ frame = 2
 
 [node name="Center" type="Node2D" parent="." index="4"]
 position = Vector2( 16, 48 )
+z_index = 1
 
 [node name="CenterSprite" type="Sprite" parent="Center" index="0"]
 texture = ExtResource( 2 )

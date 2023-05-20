@@ -1,6 +1,7 @@
 extends AudioStreamPlayer
 
 var start_60bpm = preload("res://sounds/music/60bpm-basic.wav")
+onready var fade_tween = $FadeTween
 
 enum TRACKS { START_60BPM }
 enum S { PLAYING, STOPPED }
@@ -8,11 +9,9 @@ enum S { PLAYING, STOPPED }
 var state = S.STOPPED
 
 func gently_fade(time):
-	var t = Tween.new()
-	t.interpolate_property(self, "volume_db", null, -35, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	add_child(t)
-	t.start()
-	yield(t, "tween_completed")
+	fade_tween.interpolate_property(self, "volume_db", null, -35, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	fade_tween.start()
+	yield(fade_tween, "tween_completed")
 	
 func track(t):
 	match t:
@@ -22,6 +21,7 @@ func track(t):
 			return null
 
 func begin_playing(track_):
+	fade_tween.stop_all()
 	seek(0)
 	volume_db = 0
 	stream = track(track_)

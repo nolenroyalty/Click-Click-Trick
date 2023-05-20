@@ -10,7 +10,7 @@ var bpm = 0 setget set_bpm
 var beat_time = 0
 var PATHING
 var blocked_squares = {}
-var single_trap = {}
+var single_traps = {}
 var teleporter_positions = {}
 
 func d(d_):
@@ -54,7 +54,7 @@ func is_blocked(pos):
 	return pos in blocked_squares
 
 func is_single_trap(pos):
-	return pos in single_trap
+	return pos in single_traps
 
 func is_teleporter(pos):
 	return pos in teleporter_positions
@@ -68,11 +68,11 @@ func get_other_teleporter(pos):
 			return teleporter_positions[teleporter]
 
 func add_single_trap(node):
-	single_trap[pos_(node)] = true
+	single_traps[pos_(node)] = true
 
 func clear_tracked_squares():
 	blocked_squares = {}
-	single_trap = {}
+	single_traps = {}
 	teleporter_positions = {}
 
 func pathing_id(pos):

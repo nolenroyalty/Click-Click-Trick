@@ -72,7 +72,7 @@ func entered(area):
 	
 	if success_or_fail(moveable):
 		moveable.damage()
-		pulse(U.v(1.5, 1.5))
+		pulse(U.v(2.0, 2.0))
 		# Maybe this should pulse the bottom or top if applicable too, idk
 
 func tick(beat):

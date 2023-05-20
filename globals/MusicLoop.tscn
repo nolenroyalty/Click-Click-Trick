@@ -4,3 +4,5 @@
 
 [node name="MusicLoop" type="AudioStreamPlayer"]
 script = ExtResource( 1 )
+
+[node name="FadeTween" type="Tween" parent="."]

@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 2
+var level_index = 6
 var level
 var initial_load = true
   
@@ -26,9 +26,12 @@ var LEVELS = [
 	preload("res://levels/LevelIntroduceTeleporter.tscn"),
 	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"),
 	preload("res://levels/LevelTeleportEnemyOut.tscn"), # 5
+	preload("res://levels/LevelIntroduceArrow.tscn"),
 	preload("res://levels/LevelIntroduceMovingZone.tscn"),
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
+
+var TEST_LEVEL = preload("res://levels/LevelCarefulArrows.tscn")
 
 func gently_fade(number_of_beats):
 	var time_to_take = U.beat_time * number_of_beats
@@ -97,7 +100,10 @@ func load_level(index, is_reset):
 	if level != null:
 		level.call_deferred("queue_free")
 
-	level = LEVELS[index].instance()
+	if TEST_LEVEL != null:
+		level = TEST_LEVEL.instance()
+	else:
+		level = LEVELS[index].instance()
 
 	track = level.track
 	beat_count = 0
