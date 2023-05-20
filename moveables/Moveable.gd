@@ -51,6 +51,13 @@ func clear_move_state():
 	clear_pathing()
 	moves = []
 
+func add_pathing_square(pos, move, next_move):
+	var square = PathingSquare.instance()
+	square.position = U.pos_to_world(pos)
+	get_parent().add_child(square)
+	square.init(is_player, move, next_move)
+	current_pathing_squares.append(square)
+
 func display_pathing():
 	clear_pathing()
 	var pos = U.pos_(self)
@@ -59,18 +66,28 @@ func display_pathing():
 	for move in moves:
 		if move == U.D.NONE: continue
 		var d = pos + U.d(move)
-		if U.in_bounds(d):
-			var square = PathingSquare.instance()
-			var next_move = null
 
+		# If we're already standing on the teleporter we teleported on the last move of
+		# the last tick, so we ignore the fact that we're on it!
+		if U.is_teleporter(pos) and U.pos_(self) != pos:
+			var other_teleporter = U.get_other_teleporter(pos)
+			if other_teleporter != null:
+				d = U.pos_(other_teleporter) + U.d(move)
+			else:
+				print("BUG: Couldn't find other teleporter!")
+				continue
+
+		if U.in_bounds(d):
+			var next_move = null
+			
 			if i + 1 < len(moves):
 				var movement_for_next_move = U.d(moves[i + 1])
-				if U.in_bounds(d + movement_for_next_move): next_move = moves[i+1]
+				var next_move_pos = d + movement_for_next_move
+
+				if U.in_bounds(next_move_pos):
+					next_move = moves[i+1]
 			
-			square.position = U.pos_to_world(d)
-			get_parent().add_child(square)
-			square.init(is_player, move, next_move)
-			current_pathing_squares.append(square)
+			add_pathing_square(d, move, next_move)
 			pos = d
 		
 		i += 1

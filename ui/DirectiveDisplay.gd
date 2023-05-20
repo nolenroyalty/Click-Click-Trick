@@ -21,10 +21,10 @@ func set_text(text):
 func tick(beat):
 	match beat:
 		U.BEAT.SHOW, U.BEAT.NOOP: pass
-		U.BEAT.MOVE: 	
-			$PulseTween.pulse(0)
+		U.BEAT.MOVE: pass
+			# $PulseTween.pulse(U.v(1.1, 1.1))
 
 func _ready():
 	$PulseTween.target = self
-	$PulseTween.property = "modulate:a"
-	$PulseTween.final_amount = 1
+	$PulseTween.property = "scale"
+	# $PulseTween.final_amount

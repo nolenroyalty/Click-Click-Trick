@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 2
+var level_index = 3
 var level
 var initial_load = true
   
@@ -120,9 +120,13 @@ func load_level(index, is_reset):
 	U.set_bpm(_bpm())
 	level.connect("completed", self, "handle_level_completed", [index])
 	level.connect("lost", self, "handle_level_lost")
+	level.connect("display_directive", self, "handle_directive_display_request")
 	state = S.WAIT
 	directive.set_text("space")
 	# reset counter? <- WHAT does that comment mean
+
+func handle_directive_display_request(text):
+	directive.set_text(text)
 
 func execute_tick():
 	match state:

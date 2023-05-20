@@ -10,7 +10,8 @@ var bpm = 0 setget set_bpm
 var beat_time = 0
 var PATHING
 var blocked_squares = {}
-var path_through = {}
+var single_trap = {}
+var teleporter_positions = {}
 
 func d(d_):
 	match d_:
@@ -52,16 +53,27 @@ func add_blocked_square(node):
 func is_blocked(pos):
 	return pos in blocked_squares
 
-# We encourage the enemy to path through teleporters
-func should_try_to_path_through(pos):
-	return pos in path_through
+func is_single_trap(pos):
+	return pos in single_trap
 
-func add_should_try_to_path_through(node):
-	path_through[pos_(node)] = true
+func is_teleporter(pos):
+	return pos in teleporter_positions
+
+func add_teleporter(node):
+	teleporter_positions[pos_(node)] = node
+
+func get_other_teleporter(pos):
+	for teleporter in teleporter_positions:
+		if teleporter != pos:
+			return teleporter_positions[teleporter]
+
+func add_single_trap(node):
+	single_trap[pos_(node)] = true
 
 func clear_tracked_squares():
 	blocked_squares = {}
-	path_through = {}
+	single_trap = {}
+	teleporter_positions = {}
 
 func pathing_id(pos):
 	return (int(pos.x) << 8) | int(pos.y)

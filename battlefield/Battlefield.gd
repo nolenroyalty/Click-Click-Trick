@@ -4,6 +4,7 @@ class_name Battlefield
 
 signal completed
 signal lost
+signal display_directive(text)
 
 var FOURFOUR_SIMPLE = [ U.BEAT.NOOP, U.BEAT.SHOW, U.BEAT.SHOW, U.BEAT.MOVE ]
 var TRACKS = [[ MusicLoop.TRACKS.START_60BPM, FOURFOUR_SIMPLE, 60 ]]
@@ -17,6 +18,12 @@ var dead_enemies = {}
 var goal_reached = false
 var won = false
 
+func display_directive(text):
+	emit_signal("display_directive", text)
+
+# func display_directive_with_fade(text):
+	# display_directive(null)
+	
 func fade_foreground(start_color, end_color, time_to_take):
 	var t = Tween.new()
 	t.interpolate_property(foreground, "color", start_color, end_color, time_to_take, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
@@ -193,11 +200,11 @@ class AStarPreferTeleporters:
 
 	func _compute_cost(from, _to):
 		var from_pos = U.pathing_id_to_pos(from)
-		# var to_pos = U.pathing_id_to_pos(to)
 
-		if U.should_try_to_path_through(from_pos):
-			# TODO Separate out traps vs teleporters
+		if U.is_single_trap(from_pos):
 			return 0.75
+		elif U.is_teleporter(from_pos):
+			return 0.8
 		else:
 			return 1.0
 
@@ -229,7 +236,6 @@ func generate_pathing():
 				astar.connect_points(U.pathing_id(pos), U.pathing_id(neighbor), true)
 	
 	return astar
-
 
 func _ready():
 	init_moveables()

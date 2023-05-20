@@ -91,4 +91,4 @@ func _ready():
 	sound_fail = _sound_fail
 	grid_tween.target = $Grid
 
-	U.add_should_try_to_path_through(self)
+	U.add_teleporter(self)

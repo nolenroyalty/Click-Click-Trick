@@ -98,6 +98,7 @@ func _ready():
 	grid_tween.target = $Grid
 	var _ignore = $Area2D.connect("area_entered", self, "begin_tracking")
 	_ignore = $Area2D.connect("area_exited", self, "stop_tracking")
+	U.is_single_trap(self)
 
 func _process(_delta):
 	penalize_wrong_directions()

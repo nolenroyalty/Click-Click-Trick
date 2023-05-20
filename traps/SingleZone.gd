@@ -20,4 +20,4 @@ func pulse(_amount=null):
 
 func _ready():
 	var _ignore = $Area2D.connect("area_entered", self, "entered")
-	U.add_should_try_to_path_through(self)
+	U.is_single_trap(self)

@@ -144,5 +144,4 @@ func player_entered_hurtbox(area):
 	audio.play()
 
 func _ready():
-	._ready()
 	$Hurtbox.connect("area_entered", self, "player_entered_hurtbox")
