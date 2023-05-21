@@ -59,7 +59,8 @@ func has_desired_moves(moves):
 		STAGE.MOVE_ONCE:
 			return U.D.DOWN in moves
 		STAGE.MOVE_THRICE_DIFFERENT_DIRECTIONS:
-			return [U.D.RIGHT, U.D.RIGHT, U.D.UP] == moves
+			return len(moves) > 1 and U.D.RIGHT in moves and U.D.UP in moves
+			# return [U.D.RIGHT, U.D.RIGHT, U.D.UP] == moves
 	
 	return null
 
