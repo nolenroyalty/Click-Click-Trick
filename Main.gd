@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 1
+var level_index = 5
 var level
 var initial_load = true
   
@@ -33,12 +33,14 @@ var LEVELS = [
 	preload("res://levels/LevelIntroduceHalfBeat.tscn"), # 10
 	preload("res://levels/IntroTeleportOntoHalfBeat.tscn"),
 	preload("res://levels/HalfBeatReallyHard.tscn"),
+	preload("res://levels/LevelTeleMultiSimple.tscn"),
 	# 10
 	# preload("res://levels/LevelIntroduceMovingZone.tscn"),
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
 var TEST_LEVEL = null
+# var TEST_LEVEL = preload("res://levels/LevelTeleMulti.tscn")
 # var TEST_LEVEL = preload("res://levels/IntroTeleportOntoHalfBeat.tscn")
 # var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
 
