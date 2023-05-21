@@ -11,7 +11,7 @@ var state = S.STOPPED
 func gently_fade(time):
 	fade_tween.interpolate_property(self, "volume_db", null, -60, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	fade_tween.start()
-	yield(fade_tween, "tween_completed")
+	# yield(fade_tween, "tween_completed")
 	
 func track(t):
 	match t:

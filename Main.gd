@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 13
+var level_index = 1
 var level
 var initial_load = true
   
