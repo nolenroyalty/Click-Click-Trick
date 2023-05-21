@@ -43,7 +43,7 @@ func display_tutorial_text():
 		STAGE.CANCEL_MOVE:
 			display_directive("cancel move: down up")
 		STAGE.HIT_SPACE:
-			display_directive("cancel all: down down space")
+			display_directive("cancel all: down left space")
 		STAGE.REACH_GOAL:
 			display_directive("reach goal")
 	

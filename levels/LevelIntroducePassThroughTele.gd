@@ -11,7 +11,7 @@ var first = true
 func handle_goal_status_update(status):
 	.handle_goal_status_update(status)
 	if stage == STAGE.REACH_GOAL and status == true:
-		display_directive("good luck")
+		display_directive("tutorial over. good luck")
 
 func tick(beat):
 	.tick(beat)

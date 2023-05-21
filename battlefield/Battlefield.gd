@@ -202,9 +202,9 @@ class AStarPreferTeleporters:
 		var from_pos = U.pathing_id_to_pos(from)
 
 		if U.is_single_trap(from_pos):
-			return 0.75
+			return 0.9
 		elif U.is_teleporter(from_pos):
-			return 0.8
+			return 0.95
 		else:
 			return 1.0
 
