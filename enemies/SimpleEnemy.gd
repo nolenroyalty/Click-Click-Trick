@@ -143,6 +143,7 @@ func player_entered_hurtbox(area):
 	color_tween.pulse(C.RED)
 
 	audio.stream = sound_fail
+	audio.volume_db = -15
 	audio.play()
 
 func _ready():

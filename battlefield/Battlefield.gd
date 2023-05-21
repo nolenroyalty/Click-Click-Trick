@@ -17,6 +17,7 @@ var track = TRACKS[0]
 var dead_enemies = {}
 var goal_reached = false
 var won = false
+var game_complete = false
 
 func display_directive(text):
 	emit_signal("display_directive", text)
@@ -54,7 +55,7 @@ func tick(beat):
 		U.BEAT.SHOW: 
 			pass
 		U.BEAT.MOVE:
-			if won:
+			if won and not game_complete:
 				pass
 			else:
 				move_player()
@@ -111,6 +112,7 @@ func init_moveables():
 func teleport_node(node):
 	node.position = U.pos_to_world(node.teleport_to)
 	node.set_has_been_teleported()
+	print("teleported %s" % node)
 
 func move(node, moves):
 	# Kinda feels like we should put this in moveable! but alas

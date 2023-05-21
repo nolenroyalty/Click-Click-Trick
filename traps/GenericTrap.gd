@@ -11,10 +11,12 @@ var sound_fail = preload("res://sounds/fail-2.wav")
 
 func play_success():
 	audio_success.stream = sound_success
+	audio_success.volume_db = -15
 	audio_success.play()
 
 func play_fail():
 	audio_fail.stream = sound_fail
+	audio_fail.volume_db = -15
 	audio_fail.play()
 
 func on_success():

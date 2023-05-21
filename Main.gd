@@ -15,7 +15,7 @@ var LEVEL_POSITION
 var track
 var beat_count
 var state
-var level_index = 5
+var level_index = 13
 var level
 var initial_load = true
   
@@ -34,13 +34,16 @@ var LEVELS = [
 	preload("res://levels/IntroTeleportOntoHalfBeat.tscn"),
 	preload("res://levels/HalfBeatReallyHard.tscn"),
 	preload("res://levels/LevelTeleMultiSimple.tscn"),
-	# 10
+	preload("res://levels/LevelTeleMulti2.tscn"),
+	preload("res://levels/LevelTeleMultiSolo.tscn"), # 15
+	preload("res://levels/LevelTeleMultiEnemy.tscn"), # 16
+	preload("res://levels/LevelTeleMultiMoreMechanics.tscn"),
 	# preload("res://levels/LevelIntroduceMovingZone.tscn"),
 	preload("res://levels/LevelWin.tscn") # HANDLE WINNING THE GAME
 ]
 
 var TEST_LEVEL = null
-# var TEST_LEVEL = preload("res://levels/LevelTeleMulti.tscn")
+# var TEST_LEVEL = preload("res://levels/LevelTeleMultiMoreMechanics.tscn")
 # var TEST_LEVEL = preload("res://levels/IntroTeleportOntoHalfBeat.tscn")
 # var TEST_LEVEL = preload("res://levels/LevelIntroduceHalfBeat.tscn")
 
@@ -61,17 +64,23 @@ func stop_music_and_free_level():
 
 func handle_level_completed(index):
 	print("Level %s completed" % [index])
+
+	if level_index + 1 >= len(LEVELS):
+		state = S.TICKING
+		print("WON THE GAME!!!")
+		# Do something better here?
+		directive.make_yellow()
+		directive.set_text("You win!")
+		directive.allow_pulsing()
+		level.game_complete = true
+		return
+
+	level_index += 1
+	
 	state = S.START_COMPLETED
 	gently_fade(len(_beats()))
 	yield(get_tree().create_timer(U.beat_time * len(_beats())), "timeout")
 	stop_music_and_free_level()
-
-	level_index += 1
-	if level_index >= len(LEVELS):
-		print("WON THE GAME!!!")
-		# Do something better here?
-		directive.set_text("! you win !")
-		return
 
 	load_level(level_index, false)
 

@@ -6,7 +6,7 @@ var _sound_fail = preload("res://sounds/teleportenemy.wav")
 onready var area = $Area2D
 onready var grid_tween = $GridTween
 var _other_teleporter = null
-
+var was_teleported_into = {}
 
 func all_teleporters_other_than_me():
 	var teleporters = get_tree().get_nodes_in_group("teleporter")
@@ -37,12 +37,12 @@ func get_other_teleporter():
 func on_success():
 	audio_success.stream = sound_success
 	audio_success.play()
-	audio_success.volume_db = -15
+	audio_success.volume_db = -25
 
 func on_fail():
 	audio_fail.stream = sound_fail
 	audio_fail.play()
-	audio_fail.volume_db = -15
+	audio_fail.volume_db = -25
 
 func pulse(amount=U.v(0.9, 0.9)):
 	# This syntax is insane
@@ -60,6 +60,8 @@ func teleport(node):
 		return
 	
 	if node.set_teleport_postiion_if_possible(U.pos_(other_teleporter)):
+		other_teleporter.was_teleported_into[node] = true
+		print("tele state for %s from %s" % [node, self])
 		success_or_fail(node, true)
 		pulse_full()
 		other_teleporter.pulse_full()
@@ -73,13 +75,19 @@ func tick(beat):
 func handle_area_entered(node):
 	var moveable = moveable_of_area(node)
 	if not moveable: return
-	teleport(moveable)
+	if moveable in was_teleported_into:
+		print("Not teleporting %s because it was teleported into this teleporter" % [moveable])
+	else:
+		print("Teleport %s - %s: %s" % [moveable, self, was_teleported_into])
+		teleport(moveable)
 	
 func handle_area_exited(node):
 	var parent = node.get_parent()
 	if parent is Moveable:
+		was_teleported_into.erase(parent)
 		if parent.has_been_teleported():
 			parent.clear_teleportation_state()
+			print("Clear tele state for %s from %s" % [ parent, self])
 	else:
 		print("Likely bug - %s (parent %s) exited teleporter but it's not a Moveable" % [node, parent])
 

@@ -9,7 +9,7 @@ enum S { PLAYING, STOPPED }
 var state = S.STOPPED
 
 func gently_fade(time):
-	fade_tween.interpolate_property(self, "volume_db", null, -35, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	fade_tween.interpolate_property(self, "volume_db", null, -60, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	fade_tween.start()
 	yield(fade_tween, "tween_completed")
 	
@@ -34,7 +34,7 @@ func maybe_play_again(track_):
 func start(track_):
 	state = S.PLAYING
 	fade_tween.stop_all()
-	volume_db = 0
+	volume_db = -15
 	begin_playing(track_)
 	var _ignore = self.connect("finished", self, "maybe_play_again", [track_])
 
