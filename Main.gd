@@ -24,13 +24,14 @@ var LEVELS = [
 	preload("res://levels/Level1.tscn"), # 1
 	preload("res://levels/LevelIntroduceDefeatEnemy.tscn"),
 	preload("res://levels/LevelIntroduceTeleporter.tscn"),
-	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"),
-	preload("res://levels/LevelTeleportEnemyOut.tscn"), # 5
+	preload("res://levels/LevelIntroducePassThroughTele.tscn"),
+	preload("res://levels/LevelIntroduceTeleportEnemy.tscn"), # 5
+	preload("res://levels/LevelTeleportEnemyOut.tscn"),
 	preload("res://levels/LevelIntroduceArrow.tscn"),
 	preload("res://levels/LevelPortToArrow.tscn"),
 	preload("res://levels/ArrowPortHard.tscn"),
-	preload("res://levels/LevelIntroduceHalfBeat.tscn"),
-	preload("res://levels/IntroTeleportOntoHalfBeat.tscn"), # 10
+	preload("res://levels/LevelIntroduceHalfBeat.tscn"), # 10
+	preload("res://levels/IntroTeleportOntoHalfBeat.tscn"),
 	preload("res://levels/HalfBeatReallyHard.tscn"),
 	# 10
 	# preload("res://levels/LevelIntroduceMovingZone.tscn"),

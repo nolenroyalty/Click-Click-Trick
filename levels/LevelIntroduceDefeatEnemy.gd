@@ -25,10 +25,7 @@ func handle_enemy_died(enemy):
 		STAGE.REACH_GOAL:
 			pass
 
-func handle_goal_status_update(status):
-	.handle_goal_status_update(status)
-	if stage == STAGE.REACH_GOAL and status == true:
-		display_directive("good luck")
+
 
 func tick(beat):
 	.tick(beat)
